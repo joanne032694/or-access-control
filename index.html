@@ -12,7 +12,6 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyAX2qgrC7ZL5cjrsJYvOJcVkKHcWsWouqc",
   authDomain: "or-access-control-system.firebaseapp.com",
@@ -21,19 +20,12 @@ const firebaseConfig = {
   messagingSenderId: "534273733946",
   appId: "1:534273733946:web:698d5a63da409d637fcc03"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-window._db = db;
-window._collection = collection;
-window._addDoc = addDoc;
-window._onSnapshot = onSnapshot;
-window._doc = doc;
-window._updateDoc = updateDoc;
-window._query = query;
-window._orderBy = orderBy;
-window._dbReady = true;
-window.dispatchEvent(new Event('dbReady'));
+window._db=db;window._collection=collection;window._addDoc=addDoc;
+window._onSnapshot=onSnapshot;window._doc=doc;window._updateDoc=updateDoc;
+window._query=query;window._orderBy=orderBy;
+window._dbReady=true;window.dispatchEvent(new Event('dbReady'));
 </script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
@@ -48,7 +40,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .spill{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);border-radius:20px;padding:3px 9px;font-size:11px}
 .sdot{width:6px;height:6px;border-radius:50%;background:#4ade80}
 .clock{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
-.top-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.mode-bar{background:rgba(255,255,255,.15);border-radius:10px;padding:6px;display:flex;gap:4px;margin-top:8px}
+.mode-btn{flex:1;padding:8px;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;background:transparent;color:rgba(255,255,255,.7)}
+.mode-btn.active{background:white;color:#7c3aed}
+.top-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:8px 12px 0}
 .top-nav::-webkit-scrollbar{display:none}
 .tnav{flex:1;min-width:58px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px 6px;border:none;background:rgba(255,255,255,.12);border-radius:10px;cursor:pointer;color:rgba(255,255,255,.65);font-size:10px;font-family:inherit;font-weight:500;transition:all .18s;white-space:nowrap}
 .tnav svg{width:18px;height:18px;stroke-width:2}
@@ -78,17 +73,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);background:var(--white);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
 .fg textarea{min-height:68px;resize:vertical}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.cert-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);margin-bottom:8px;border:2px solid #e5e7eb;transition:all .15s;cursor:pointer}
-.cert-opt.selected{border-color:#7c3aed;background:#ede9fe}
-.cert-opt label{font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:500}
-.cert-opt.selected label{color:#7c3aed;font-weight:700}
+.cert-opt{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fafafa;border-radius:var(--rsm);margin-bottom:8px;border:2px solid #e5e7eb;transition:all .2s;cursor:pointer}
 .cert-opt input[type=radio]{width:18px;height:18px;accent-color:var(--c1);flex-shrink:0}
-.cinp{flex:1;padding:6px 10px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:8px;background:var(--white);color:var(--text);font-family:inherit}
-.cinp:disabled{background:#f3f4f6;color:var(--text3)}
+.cert-opt label{font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:500;flex:1}
+.cinp{flex:1;padding:8px 10px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:8px;background:var(--white);color:var(--text);font-family:inherit;min-width:0}
+.cinp:disabled{background:#f3f4f6;color:var(--text3);pointer-events:none}
 .cinp:focus{outline:none;border-color:var(--c1)}
 .chk-row{display:flex;flex-wrap:wrap;gap:8px}
-.ci{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#fafafa;border-radius:var(--rsm);border:2px solid #e5e7eb;cursor:pointer;font-size:13px;color:var(--text);transition:all .15s;font-weight:500}
-.ci input[type=checkbox]{width:16px;height:16px;accent-color:var(--c2)}
+.ci{display:flex;align-items:center;gap:6px;padding:10px 16px;background:#fafafa;border-radius:var(--rsm);border:2px solid #e5e7eb;cursor:pointer;font-size:14px;color:var(--text);transition:all .2s;font-weight:500}
+.ci input[type=checkbox]{width:17px;height:17px;accent-color:var(--c2)}
 .ci.checked{background:#db2777;border-color:#db2777;color:#fff;font-weight:700}
 .oinp{width:100%;margin-top:8px;padding:8px 12px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:var(--rsm);background:#fafafa;color:var(--text);font-family:inherit}
 .oinp:focus{outline:none;border-color:var(--c1)}
@@ -120,12 +113,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .ropt.sel-yes{border-color:#059669;background:#d1fae5;color:#059669;font-weight:700}
 .ropt.sel-no{border-color:#dc2626;background:#fee2e2;color:#dc2626;font-weight:700}
 .ropt input[type=radio]{width:17px;height:17px;flex-shrink:0}
-.loading{text-align:center;padding:20px;color:var(--text2);font-size:13px}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,27,75,.92);color:white;padding:10px 22px;border-radius:24px;font-size:13px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.mode-bar{background:rgba(255,255,255,.15);border-radius:10px;padding:6px;display:flex;gap:4px;margin-top:8px}
-.mode-btn{flex:1;padding:8px;border:none;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;font-family:inherit;background:transparent;color:rgba(255,255,255,.7)}
-.mode-btn.active{background:white;color:#7c3aed}
 </style></head>
 <body>
 <div class="app-header">
@@ -165,8 +154,15 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="fg">
         <label>取得台灣手術全期護理學會醫療器材專業人員手術病人安全研習會證照<span class="req">*</span></label>
-        <div class="cert-opt" id="cert-opt-yes"><input type="radio" name="cert" id="cert-yes" value="是" onchange="toggleCert()"><label for="cert-yes">✅ 是　卡號</label><input type="text" class="cinp" id="cert-card" placeholder="請輸入卡號" disabled></div>
-        <div class="cert-opt" id="cert-opt-no"><input type="radio" name="cert" id="cert-no" value="否" onchange="toggleCert()"><label for="cert-no">❌ 否</label></div>
+        <div class="cert-opt" id="cert-opt-yes">
+          <input type="radio" name="cert" id="cert-yes" value="是" onchange="toggleCert()">
+          <label for="cert-yes">✅ 是　卡號</label>
+          <input type="text" class="cinp" id="cert-card" placeholder="請輸入卡號" disabled>
+        </div>
+        <div class="cert-opt" id="cert-opt-no">
+          <input type="radio" name="cert" id="cert-no" value="否" onchange="toggleCert()">
+          <label for="cert-no">❌ 否</label>
+        </div>
       </div>
       <div class="fg">
         <label>交換證件<span class="req">*</span></label>
@@ -191,7 +187,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
     <div class="sc sc3"><div class="sn sn3" id="s-pending">0</div><div class="sl">待換證</div></div>
     <div class="sc sc4"><div class="sn sn4" id="s-left">0</div><div class="sl">已離場</div></div>
   </div>
-  <div class="top-nav" style="padding:8px 12px 0;gap:4px">
+  <div class="top-nav">
     <button class="tnav t-entry active" onclick="showPanel('entry')" id="nav-entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 3h6v6M10 14L21 3M9 21H3v-6"/></svg>完成登記</button>
     <button class="tnav t-exit" onclick="showPanel('exit')" id="nav-exit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H3v-6M15 10l-11 11M15 3h6v6"/></svg>離場換證</button>
     <button class="tnav t-records" onclick="showPanel('records')" id="nav-records"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>進出紀錄</button>
@@ -219,7 +215,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
       <div class="btn-row">
-        <button class="btn bg" onclick="clearForm()">清除</button>
+        <button class="btn bg" onclick="clearNurseForm()">清除</button>
         <button class="btn bp" onclick="submitEntry()">✅ 確認進場登記</button>
       </div>
     </div></div>
@@ -247,7 +243,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 
   <div id="panel-records" class="panel" style="padding:12px">
-    <div class="fc"><div class="ch chg">📋 進出紀錄</div><div id="record-list"><div class="loading">載入中...</div></div></div>
+    <div class="fc"><div class="ch chg">📋 進出紀錄</div><div id="record-list"><div class="empty"><div class="emi">📋</div>載入中...</div></div></div>
   </div>
 
   <div id="panel-report" class="panel" style="padding:12px">
@@ -278,18 +274,9 @@ let currentMode='vendor';
 function switchMode(mode){
   if(mode==='nurse'){
     const pwd=prompt('請輸入護理人員密碼：');
-    if(pwd!=='A030'){
-      toast('❌ 密碼錯誤');
-      return;
-    }
+    if(pwd===null)return;
+    if(pwd!=='A030'){alert('❌ 密碼錯誤，無法進入護理人員模式');return;}
   }
-  currentMode=mode;
-  document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
-  document.getElementById('nurse-mode').style.display=mode==='nurse'?'block':'none';
-  document.getElementById('mode-vendor').classList.toggle('active',mode==='vendor');
-  document.getElementById('mode-nurse').classList.toggle('active',mode==='nurse');
-  if(mode==='nurse'){renderExitList();renderRecords();}
-}
   currentMode=mode;
   document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
   document.getElementById('nurse-mode').style.display=mode==='nurse'?'block':'none';
@@ -322,13 +309,37 @@ function toggleCert(){
   const r=document.querySelector('input[name=cert]:checked');
   const c=document.getElementById('cert-card');
   const y=r&&r.value==='是';
-  c.disabled=!y;c.style.opacity=y?'1':'0.4';if(!y)c.value='';
-  document.getElementById('cert-opt-yes').classList.toggle('selected',y);
-  document.getElementById('cert-opt-no').classList.toggle('selected',!y&&r!=null);
+  c.disabled=!y;
+  c.style.opacity=y?'1':'0.5';
+  c.style.pointerEvents=y?'auto':'none';
+  if(!y)c.value='';
+  const optYes=document.getElementById('cert-opt-yes');
+  const optNo=document.getElementById('cert-opt-no');
+  if(y){
+    optYes.style.background='#7c3aed';optYes.style.borderColor='#7c3aed';
+    optYes.querySelector('label').style.color='white';
+    optNo.style.background='#fafafa';optNo.style.borderColor='#e5e7eb';
+    optNo.querySelector('label').style.color='';
+  } else if(r){
+    optNo.style.background='#db2777';optNo.style.borderColor='#db2777';
+    optNo.querySelector('label').style.color='white';
+    optYes.style.background='#fafafa';optYes.style.borderColor='#e5e7eb';
+    optYes.querySelector('label').style.color='';
+  }
 }
+
 function updChk(el,id){document.getElementById(id).classList.toggle('checked',el.checked);}
-function togOther(el,id){document.getElementById(id).classList.toggle('checked',el.checked);document.getElementById('other-text').style.display=el.checked?'block':'none';}
-function getIdChecked(){const v=[];document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>{if(c.checked){if(c.value==='其他'){const t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}});return v.join('、');}
+function togOther(el,id){
+  document.getElementById(id).classList.toggle('checked',el.checked);
+  document.getElementById('other-text').style.display=el.checked?'block':'none';
+}
+function getIdChecked(){
+  const v=[];
+  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>{
+    if(c.checked){if(c.value==='其他'){const t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}
+  });
+  return v.join('、');
+}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 function selRet(which){
   document.querySelector('input[name=ret-badge][value="'+(which==='yes'?'是':'否')+'"]').checked=true;
@@ -345,29 +356,31 @@ function submitEntry(){
   const certCard=cert==='是'?document.getElementById('cert-card').value.trim():'';
   if(cert==='是'&&!certCard){document.getElementById('cert-card').focus();toast('請輸入證照卡號');return;}
   const idDoc=getIdChecked();if(!idDoc){toast('請選擇交換證件');return;}
-
   const data={date:v['f-date'],time:v['f-time'],company:v['f-company'],brand:v['f-brand'],name:v['f-name'],phone:v['f-phone'],cert,certCard,idDoc,dept:v['f-dept'],doctor:v['f-doctor'],surgery:v['f-surgery'],or:v['f-or'],badge:v['f-badge'],recorder:v['f-recorder'],note:document.getElementById('f-note').value,status:'in',createdAt:Date.now()};
-
   if(window._dbReady){
     window._addDoc(window._collection(window._db,'records'),data)
-      .then(()=>{toast('✅ 進場登記完成（已同步雲端）');clearForm();})
+      .then(()=>{toast('✅ 進場登記完成（已同步雲端）');clearVendorForm();clearNurseForm();})
       .catch(()=>{toast('❌ 儲存失敗，請重試');});
-  } else {
-    toast('資料庫連接中，請稍候...');
-  }
+  } else {toast('資料庫連接中，請稍候...');}
 }
 
-function clearForm(){
-  ['f-company','f-brand','f-name','f-phone','f-doctor','f-surgery','f-badge','f-recorder','f-note','cert-card'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-dept').value='';document.getElementById('f-or').value='';
-  document.getElementById('f-date').value=today;document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
+function clearVendorForm(){
+  ['f-company','f-brand','f-name','f-phone','cert-card'].forEach(id=>document.getElementById(id).value='');
   document.querySelectorAll('input[name=cert]').forEach(r=>r.checked=false);
   document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>c.checked=false);
   ['lbl-id','lbl-hc','lbl-other'].forEach(id=>document.getElementById(id).classList.remove('checked'));
   document.getElementById('other-text').style.display='none';document.getElementById('other-text').value='';
-  document.getElementById('cert-card').disabled=true;document.getElementById('cert-card').style.opacity='0.4';
-  document.getElementById('cert-opt-yes').classList.remove('selected');
-  document.getElementById('cert-opt-no').classList.remove('selected');
+  document.getElementById('cert-card').disabled=true;document.getElementById('cert-card').style.opacity='0.5';
+  document.getElementById('cert-opt-yes').style.cssText='';document.getElementById('cert-opt-no').style.cssText='';
+  document.getElementById('cert-opt-yes').querySelector('label').style.color='';
+  document.getElementById('cert-opt-no').querySelector('label').style.color='';
+  document.getElementById('f-date').value=today;
+  document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
+}
+
+function clearNurseForm(){
+  ['f-dept','f-or'].forEach(id=>document.getElementById(id).value='');
+  ['f-doctor','f-surgery','f-badge','f-recorder','f-note'].forEach(id=>document.getElementById(id).value='');
 }
 
 function renderExitList(){
@@ -437,10 +450,7 @@ window.addEventListener('dbReady',()=>{
   window._onSnapshot(q,(snapshot)=>{
     records=snapshot.docs.map(d=>({id:d.id,...d.data()}));
     updateStats();
-    if(currentMode==='nurse'){
-      renderExitList();
-      renderRecords();
-    }
+    if(currentMode==='nurse'){renderExitList();renderRecords();}
   });
 });
 </script>
