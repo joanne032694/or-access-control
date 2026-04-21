@@ -1,3 +1,4 @@
+貼第1段：
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -24,17 +25,17 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .spill{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:12px}
 .sdot{width:7px;height:7px;border-radius:50%;background:#4ade80}
 .clock{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
-.mode-bar{background:rgba(255,255,255,.15);border-radius:10px;padding:6px;display:flex;gap:4px;margin-top:8px}
-.mode-btn{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:transparent;color:rgba(255,255,255,.7)}
-.mode-btn.active{background:white;color:#7c3aed}
-.top-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:8px 12px 0}
+.mode-bar{background:rgba(0,0,0,.2);border-radius:10px;padding:6px;display:flex;gap:4px;margin-top:8px}
+.mode-btn{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:transparent;color:rgba(255,255,255,.6)}
+.mode-btn.active{background:white;color:#7c3aed;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.top-nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 12px 2px;background:rgba(0,0,0,.15)}
 .top-nav::-webkit-scrollbar{display:none}
-.tnav{flex:1;min-width:62px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px 7px;border:none;background:rgba(255,255,255,.12);border-radius:10px;cursor:pointer;color:rgba(255,255,255,.65);font-size:11px;font-family:inherit;font-weight:500;transition:all .18s;white-space:nowrap}
+.tnav{flex:1;min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);border-radius:10px;cursor:pointer;color:rgba(255,255,255,.6);font-size:11px;font-family:inherit;font-weight:500;transition:all .18s;white-space:nowrap}
 .tnav svg{width:20px;height:20px;stroke-width:2}
-.tnav.t-entry.active{background:#7c3aed;color:#fff;box-shadow:0 2px 10px rgba(124,58,237,.6)}
-.tnav.t-exit.active{background:#db2777;color:#fff;box-shadow:0 2px 10px rgba(219,39,119,.6)}
-.tnav.t-records.active{background:#059669;color:#fff;box-shadow:0 2px 10px rgba(5,150,105,.6)}
-.tnav.t-report.active{background:#d97706;color:#fff;box-shadow:0 2px 10px rgba(217,119,6,.6)}
+.tnav.t-entry.active{background:#7c3aed;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+.tnav.t-exit.active{background:#db2777;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+.tnav.t-records.active{background:#059669;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+.tnav.t-report.active{background:#d97706;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 12px 0}
 .sc{border-radius:var(--rsm);padding:12px 6px;text-align:center}
 .sc1{background:var(--c1l)}.sc2{background:var(--c2l)}.sc3{background:var(--c3l)}.sc4{background:var(--c4l)}
@@ -100,6 +101,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,27,75,.92);color:white;padding:12px 24px;border-radius:24px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style></head>
+貼第2段：
 <body>
 <div class="app-header">
   <div class="hdr-top">
@@ -236,6 +238,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 <div class="toast" id="toast"></div>
+貼第3段（最後一段）：
 <script>
 var db;
 firebase.initializeApp({
