@@ -9,24 +9,8 @@
 <meta name="apple-mobile-web-app-title" content="手術室門禁">
 <link rel="manifest" href="manifest.json">
 <title>手術室門禁管理系統</title>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyAX2qgrC7ZL5cjrsJYvOJcVkKHcWsWouqc",
-  authDomain: "or-access-control-system.firebaseapp.com",
-  projectId: "or-access-control-system",
-  storageBucket: "or-access-control-system.firebasestorage.app",
-  messagingSenderId: "534273733946",
-  appId: "1:534273733946:web:698d5a63da409d637fcc03"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-window._db=db;window._collection=collection;window._addDoc=addDoc;
-window._onSnapshot=onSnapshot;window._doc=doc;window._updateDoc=updateDoc;
-window._query=query;window._orderBy=orderBy;
-window._dbReady=true;window.dispatchEvent(new Event('dbReady'));
-</script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
 :root{--c1:#7c3aed;--c1l:#ede9fe;--c2:#db2777;--c2l:#fce7f3;--c3:#059669;--c3l:#d1fae5;--c4:#d97706;--c4l:#fef3c7;--c5:#0284c7;--c5l:#e0f2fe;--bg:#f5f3ff;--white:#fff;--text:#1e1b4b;--text2:#6b7280;--text3:#9ca3af;--border:rgba(0,0,0,0.08);--radius:16px;--rsm:10px;--shadow:0 2px 8px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)}
@@ -77,7 +61,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .cert-opt input[type=radio]{width:18px;height:18px;accent-color:var(--c1);flex-shrink:0}
 .cert-opt label{font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:500;flex:1}
 .cinp{flex:1;padding:8px 10px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:8px;background:var(--white);color:var(--text);font-family:inherit;min-width:0}
-.cinp:disabled{background:#f3f4f6;color:var(--text3);pointer-events:none}
+.cinp:disabled{background:#f3f4f6;color:var(--text3)}
 .cinp:focus{outline:none;border-color:var(--c1)}
 .chk-row{display:flex;flex-wrap:wrap;gap:8px}
 .ci{display:flex;align-items:center;gap:6px;padding:10px 16px;background:#fafafa;border-radius:var(--rsm);border:2px solid #e5e7eb;cursor:pointer;font-size:14px;color:var(--text);transition:all .2s;font-weight:500}
@@ -121,7 +105,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   <div class="hdr-top">
     <div>
       <div class="hdr-title">🏥 手術室門禁管理系統</div>
-      <div class="hdr-sub">OR ACCESS CONTROL SYSTEM · v4.0</div>
+      <div class="hdr-sub">OR ACCESS CONTROL SYSTEM · v4.1</div>
     </div>
     <div class="hdr-right">
       <div class="spill"><div class="sdot"></div><span>正常</span></div>
@@ -193,7 +177,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
     <button class="tnav t-records" onclick="showPanel('records')" id="nav-records"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>進出紀錄</button>
     <button class="tnav t-report" onclick="showPanel('report')" id="nav-report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>月報表</button>
   </div>
-
   <div id="panel-entry" class="panel active" style="padding:12px">
     <div class="fc"><div class="ch chg">✍️ 護理人員填寫</div><div class="cb">
       <div class="notice">請核對廠商資料後，填寫以下資訊完成登記。</div>
@@ -220,7 +203,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
     </div></div>
   </div>
-
   <div id="panel-exit" class="panel" style="padding:12px">
     <div class="fc"><div class="ch chk">🚪 待離場人員</div><div id="exit-list"><div class="empty"><div class="emi">✅</div>目前無待離場人員</div></div></div>
     <div class="fc" id="exit-form-card" style="display:none"><div class="ch chk">📝 離場確認</div><div class="cb">
@@ -241,11 +223,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
     </div></div>
   </div>
-
   <div id="panel-records" class="panel" style="padding:12px">
     <div class="fc"><div class="ch chg">📋 進出紀錄</div><div id="record-list"><div class="empty"><div class="emi">📋</div>載入中...</div></div></div>
   </div>
-
   <div id="panel-report" class="panel" style="padding:12px">
     <div class="rpt-ctrl">
       <div class="rpt-row"><input type="month" id="rpt-month"><button class="btn ba" style="flex:none;padding:10px 16px;font-size:13px" onclick="genReport()">產生報表</button></div>
@@ -261,19 +241,37 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 </div>
 <div class="toast" id="toast"></div>
 <script>
+var db;
+firebase.initializeApp({
+  apiKey:"AIzaSyAX2qgrC7ZL5cjrsJYvOJcVkKHcWsWouqc",
+  authDomain:"or-access-control-system.firebaseapp.com",
+  projectId:"or-access-control-system",
+  storageBucket:"or-access-control-system.firebasestorage.app",
+  messagingSenderId:"534273733946",
+  appId:"1:534273733946:web:698d5a63da409d637fcc03"
+});
+db=firebase.firestore();
+
+var records=[];
+var currentMode='vendor';
+var exitId=null;
+var today=new Date().toISOString().split('T')[0];
+
 function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('zh-TW',{hour12:false});}
 updateClock();setInterval(updateClock,1000);
-const today=new Date().toISOString().split('T')[0];
 document.getElementById('f-date').value=today;
 document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
 document.getElementById('rpt-month').value=today.slice(0,7);
 
-let records=[];
-let currentMode='vendor';
+db.collection('records').orderBy('createdAt','desc').onSnapshot(function(snapshot){
+  records=snapshot.docs.map(function(d){return Object.assign({id:d.id},d.data());});
+  updateStats();
+  if(currentMode==='nurse'){renderExitList();renderRecords();}
+});
 
 function switchMode(mode){
   if(mode==='nurse'){
-    const pwd=prompt('請輸入護理人員密碼：');
+    var pwd=prompt('請輸入護理人員密碼：');
     if(pwd===null)return;
     if(pwd!=='A030'){alert('❌ 密碼錯誤，無法進入護理人員模式');return;}
   }
@@ -286,35 +284,33 @@ function switchMode(mode){
 }
 
 function showPanel(name){
-  ['entry','exit','records','report'].forEach(p=>{
+  ['entry','exit','records','report'].forEach(function(p){
     document.getElementById('panel-'+p).classList.remove('active');
     document.getElementById('nav-'+p).classList.remove('active');
   });
   document.getElementById('panel-'+name).classList.add('active');
   document.getElementById('nav-'+name).classList.add('active');
-  if(name==='exit') renderExitList();
-  if(name==='records') renderRecords();
+  if(name==='exit')renderExitList();
+  if(name==='records')renderRecords();
   window.scrollTo(0,0);
 }
 
 function updateStats(){
-  const tr=records.filter(r=>r.date===today);
+  var tr=records.filter(function(r){return r.date===today;});
   document.getElementById('s-total').textContent=tr.length;
-  document.getElementById('s-inside').textContent=tr.filter(r=>r.status==='in').length;
-  document.getElementById('s-pending').textContent=tr.filter(r=>r.status==='in').length;
-  document.getElementById('s-left').textContent=tr.filter(r=>r.status==='out').length;
+  document.getElementById('s-inside').textContent=tr.filter(function(r){return r.status==='in';}).length;
+  document.getElementById('s-pending').textContent=tr.filter(function(r){return r.status==='in';}).length;
+  document.getElementById('s-left').textContent=tr.filter(function(r){return r.status==='out';}).length;
 }
 
 function toggleCert(){
-  const r=document.querySelector('input[name=cert]:checked');
-  const c=document.getElementById('cert-card');
-  const y=r&&r.value==='是';
-  c.disabled=!y;
-  c.style.opacity=y?'1':'0.5';
-  c.style.pointerEvents=y?'auto':'none';
+  var r=document.querySelector('input[name=cert]:checked');
+  var c=document.getElementById('cert-card');
+  var y=r&&r.value==='是';
+  c.disabled=!y;c.style.opacity=y?'1':'0.5';
   if(!y)c.value='';
-  const optYes=document.getElementById('cert-opt-yes');
-  const optNo=document.getElementById('cert-opt-no');
+  var optYes=document.getElementById('cert-opt-yes');
+  var optNo=document.getElementById('cert-opt-no');
   if(y){
     optYes.style.background='#7c3aed';optYes.style.borderColor='#7c3aed';
     optYes.querySelector('label').style.color='white';
@@ -334,13 +330,16 @@ function togOther(el,id){
   document.getElementById('other-text').style.display=el.checked?'block':'none';
 }
 function getIdChecked(){
-  const v=[];
-  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>{
-    if(c.checked){if(c.value==='其他'){const t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}
+  var v=[];
+  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){
+    if(c.checked){if(c.value==='其他'){var t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}
   });
   return v.join('、');
 }
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function toast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2500);
+}
 function selRet(which){
   document.querySelector('input[name=ret-badge][value="'+(which==='yes'?'是':'否')+'"]').checked=true;
   document.getElementById('ropt-yes').className='ropt'+(which==='yes'?' sel-yes':'');
@@ -348,30 +347,32 @@ function selRet(which){
 }
 
 function submitEntry(){
-  const req=['f-date','f-time','f-company','f-brand','f-name','f-phone','f-dept','f-doctor','f-surgery','f-or','f-badge','f-recorder'];
-  const v={};
-  for(const f of req){const x=document.getElementById(f).value.trim();if(!x){document.getElementById(f).focus();toast('請填寫所有必填欄位');return;}v[f]=x;}
-  const cert=(document.querySelector('input[name=cert]:checked')||{}).value||'';
+  var req=['f-date','f-time','f-company','f-brand','f-name','f-phone','f-dept','f-doctor','f-surgery','f-or','f-badge','f-recorder'];
+  var v={};
+  for(var i=0;i<req.length;i++){
+    var x=document.getElementById(req[i]).value.trim();
+    if(!x){document.getElementById(req[i]).focus();toast('請填寫所有必填欄位');return;}
+    v[req[i]]=x;
+  }
+  var cert=(document.querySelector('input[name=cert]:checked')||{}).value||'';
   if(!cert){toast('請選擇是否取得證照');return;}
-  const certCard=cert==='是'?document.getElementById('cert-card').value.trim():'';
+  var certCard=cert==='是'?document.getElementById('cert-card').value.trim():'';
   if(cert==='是'&&!certCard){document.getElementById('cert-card').focus();toast('請輸入證照卡號');return;}
-  const idDoc=getIdChecked();if(!idDoc){toast('請選擇交換證件');return;}
-  const data={date:v['f-date'],time:v['f-time'],company:v['f-company'],brand:v['f-brand'],name:v['f-name'],phone:v['f-phone'],cert,certCard,idDoc,dept:v['f-dept'],doctor:v['f-doctor'],surgery:v['f-surgery'],or:v['f-or'],badge:v['f-badge'],recorder:v['f-recorder'],note:document.getElementById('f-note').value,status:'in',createdAt:Date.now()};
-  if(window._dbReady){
-    window._addDoc(window._collection(window._db,'records'),data)
-      .then(()=>{toast('✅ 進場登記完成（已同步雲端）');clearVendorForm();clearNurseForm();})
-      .catch(()=>{toast('❌ 儲存失敗，請重試');});
-  } else {toast('資料庫連接中，請稍候...');}
+  var idDoc=getIdChecked();if(!idDoc){toast('請選擇交換證件');return;}
+  var data={date:v['f-date'],time:v['f-time'],company:v['f-company'],brand:v['f-brand'],name:v['f-name'],phone:v['f-phone'],cert:cert,certCard:certCard,idDoc:idDoc,dept:v['f-dept'],doctor:v['f-doctor'],surgery:v['f-surgery'],or:v['f-or'],badge:v['f-badge'],recorder:v['f-recorder'],note:document.getElementById('f-note').value,status:'in',createdAt:Date.now()};
+  db.collection('records').add(data)
+    .then(function(){toast('✅ 進場登記完成（已同步雲端）');clearVendorForm();clearNurseForm();})
+    .catch(function(){toast('❌ 儲存失敗，請重試');});
 }
 
 function clearVendorForm(){
-  ['f-company','f-brand','f-name','f-phone','cert-card'].forEach(id=>document.getElementById(id).value='');
-  document.querySelectorAll('input[name=cert]').forEach(r=>r.checked=false);
-  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>c.checked=false);
-  ['lbl-id','lbl-hc','lbl-other'].forEach(id=>document.getElementById(id).classList.remove('checked'));
+  ['f-company','f-brand','f-name','f-phone','cert-card'].forEach(function(id){document.getElementById(id).value='';});
+  document.querySelectorAll('input[name=cert]').forEach(function(r){r.checked=false;});
+  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){c.checked=false;});
+  ['lbl-id','lbl-hc','lbl-other'].forEach(function(id){document.getElementById(id).classList.remove('checked');});
   document.getElementById('other-text').style.display='none';document.getElementById('other-text').value='';
   document.getElementById('cert-card').disabled=true;document.getElementById('cert-card').style.opacity='0.5';
-  document.getElementById('cert-opt-yes').style.cssText='';document.getElementById('cert-opt-no').style.cssText='';
+  document.getElementById('cert-opt-yes').removeAttribute('style');document.getElementById('cert-opt-no').removeAttribute('style');
   document.getElementById('cert-opt-yes').querySelector('label').style.color='';
   document.getElementById('cert-opt-no').querySelector('label').style.color='';
   document.getElementById('f-date').value=today;
@@ -379,25 +380,24 @@ function clearVendorForm(){
 }
 
 function clearNurseForm(){
-  ['f-dept','f-or'].forEach(id=>document.getElementById(id).value='');
-  ['f-doctor','f-surgery','f-badge','f-recorder','f-note'].forEach(id=>document.getElementById(id).value='');
+  ['f-dept','f-or'].forEach(function(id){document.getElementById(id).value='';});
+  ['f-doctor','f-surgery','f-badge','f-recorder','f-note'].forEach(function(id){document.getElementById(id).value='';});
 }
 
 function renderExitList(){
-  const inside=records.filter(r=>r.status==='in');
-  const el=document.getElementById('exit-list');
+  var inside=records.filter(function(r){return r.status==='in';});
+  var el=document.getElementById('exit-list');
   document.getElementById('exit-form-card').style.display='none';
   if(!inside.length){el.innerHTML='<div class="empty"><div class="emi">✅</div>目前無待離場人員</div>';return;}
-  el.innerHTML=inside.map(r=>`<div class="exit-item"><div><div class="em">${r.company}（${r.brand}）· ${r.name}</div><div class="es">${r.or||''} · ${r.dept||''} · 進場 ${r.time} · 識別證 ${r.badge||''}</div></div><button class="ebtn" onclick="openExitForm('${r.id}')">離場<br>換證</button></div>`).join('');
+  el.innerHTML=inside.map(function(r){return '<div class="exit-item"><div><div class="em">'+r.company+'（'+r.brand+'）· '+r.name+'</div><div class="es">'+(r.or||'')+' · '+(r.dept||'')+' · 進場 '+r.time+' · 識別證 '+(r.badge||'')+'</div></div><button class="ebtn" onclick="openExitForm(\''+r.id+'\')">離場<br>換證</button></div>';}).join('');
 }
 
-let exitId=null;
 function openExitForm(id){
-  exitId=id;const r=records.find(x=>x.id===id);
-  document.getElementById('exit-form-person').textContent=`${r.company}（${r.brand}）· ${r.name} · ${r.or||''}`;
+  exitId=id;var r=records.find(function(x){return x.id===id;});
+  document.getElementById('exit-form-person').textContent=r.company+'（'+r.brand+'）· '+r.name+' · '+(r.or||'');
   document.getElementById('exit-time').value=new Date().toTimeString().slice(0,5);
   document.getElementById('exit-signer').value='';
-  document.querySelectorAll('input[name=ret-badge]').forEach(x=>x.checked=false);
+  document.querySelectorAll('input[name=ret-badge]').forEach(function(x){x.checked=false;});
   document.getElementById('ropt-yes').className='ropt';
   document.getElementById('ropt-no').className='ropt';
   document.getElementById('exit-form-card').style.display='block';
@@ -405,54 +405,43 @@ function openExitForm(id){
 }
 function cancelExit(){exitId=null;document.getElementById('exit-form-card').style.display='none';}
 function confirmExit(){
-  const ret=(document.querySelector('input[name=ret-badge]:checked')||{}).value||'';
+  var ret=(document.querySelector('input[name=ret-badge]:checked')||{}).value||'';
   if(!ret){toast('請選擇是否歸還識別證');return;}
-  const et=document.getElementById('exit-time').value;if(!et){toast('請填寫離開時間');return;}
-  const sg=document.getElementById('exit-signer').value.trim();if(!sg){toast('請填寫手術室人員簽名');return;}
-  if(window._dbReady){
-    window._updateDoc(window._doc(window._db,'records',exitId),{status:'out',exitTime:et,retBadge:ret,exitSigner:sg})
-      .then(()=>{exitId=null;toast('✅ 離場換證完成');})
-      .catch(()=>toast('❌ 更新失敗'));
-  }
+  var et=document.getElementById('exit-time').value;if(!et){toast('請填寫離開時間');return;}
+  var sg=document.getElementById('exit-signer').value.trim();if(!sg){toast('請填寫手術室人員簽名');return;}
+  db.collection('records').doc(exitId).update({status:'out',exitTime:et,retBadge:ret,exitSigner:sg})
+    .then(function(){exitId=null;toast('✅ 離場換證完成');})
+    .catch(function(){toast('❌ 更新失敗');});
 }
 
 function renderRecords(){
-  const el=document.getElementById('record-list');
+  var el=document.getElementById('record-list');
   if(!records.length){el.innerHTML='<div class="empty"><div class="emi">📋</div>尚無進出紀錄</div>';return;}
-  el.innerHTML=[...records].reverse().map(r=>`<div class="ri"><div class="rt"><div class="rn">${r.company}・${r.name}</div><span class="badge ${r.status==='in'?'bin':'bout'}">${r.status==='in'?'在場中':'已離場'}</span></div><div class="rm">${r.brand} ／ ${r.or||''} ／ ${r.dept||''}<br>進場 ${r.date} ${r.time}${r.exitTime?' ／ 離場 '+r.exitTime:''}<br>識別證：${r.badge||''}　<span class="badge ${r.retBadge==='是'?'bry':'brn'}">${r.retBadge?'歸還：'+r.retBadge:'未離場'}</span><br>交換：${r.idDoc}<br><span class="badge ${r.cert==='是'?'bcy':'bcn'}">${r.cert==='是'?'持證 #'+r.certCard:'未持證'}</span><br>進場簽名：${r.recorder||''}${r.exitSigner?' ／ 離場簽名：'+r.exitSigner:''}</div></div>`).join('');
+  el.innerHTML=records.map(function(r){return '<div class="ri"><div class="rt"><div class="rn">'+r.company+'・'+r.name+'</div><span class="badge '+(r.status==='in'?'bin':'bout')+'">'+(r.status==='in'?'在場中':'已離場')+'</span></div><div class="rm">'+r.brand+' ／ '+(r.or||'')+' ／ '+(r.dept||'')+'<br>進場 '+r.date+' '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'<br>識別證：'+(r.badge||'')+'　<span class="badge '+(r.retBadge==='是'?'bry':'brn')+'">'+(r.retBadge?'歸還：'+r.retBadge:'未離場')+'</span><br>交換：'+r.idDoc+'<br><span class="badge '+(r.cert==='是'?'bcy':'bcn')+'">'+(r.cert==='是'?'持證 #'+r.certCard:'未持證')+'</span><br>進場簽名：'+(r.recorder||'')+(r.exitSigner?' ／ 離場簽名：'+r.exitSigner:'')+'</div></div>';}).join('');
 }
 
 function genReport(){
-  const month=document.getElementById('rpt-month').value;if(!month)return;
-  const f=records.filter(r=>r.date.startsWith(month));
-  const cy=f.filter(r=>r.cert==='是').length;
+  var month=document.getElementById('rpt-month').value;if(!month)return;
+  var f=records.filter(function(r){return r.date.startsWith(month);});
+  var cy=f.filter(function(r){return r.cert==='是';}).length;
   document.getElementById('rpt-total').textContent=f.length;
   document.getElementById('rpt-cert').textContent=cy;
   document.getElementById('rpt-nocert').textContent=f.length-cy;
   document.getElementById('rpt-summary').style.display='grid';
-  const el=document.getElementById('rpt-list');
+  var el=document.getElementById('rpt-list');
   if(!f.length){el.innerHTML='<div class="empty"><div class="emi">📊</div>該月份無進出紀錄</div>';return;}
-  el.innerHTML=f.map(r=>`<div class="ri"><div class="rt"><div class="rn">${r.company}・${r.name}</div><span class="badge ${r.status==='in'?'bin':'bout'}">${r.status==='in'?'在場中':'已離場'}</span></div><div class="rm">${r.brand} ／ ${r.or||''} ／ ${r.dept||''} ／ ${r.doctor||''}<br>${r.date} 進場 ${r.time}${r.exitTime?' ／ 離場 '+r.exitTime:''}<br>識別證：${r.badge||''}　<span class="badge ${r.retBadge==='是'?'bry':'brn'}">${r.retBadge?'歸還：'+r.retBadge:'-'}</span><br>交換：${r.idDoc}<br><span class="badge ${r.cert==='是'?'bcy':'bcn'}">${r.cert==='是'?'持證 #'+r.certCard:'未持證'}</span><br>進場簽名：${r.recorder||''}${r.exitSigner?' ／ 離場簽名：'+r.exitSigner:''}${r.note?' ／ 備註：'+r.note:''}</div></div>`).join('');
+  el.innerHTML=f.map(function(r){return '<div class="ri"><div class="rt"><div class="rn">'+r.company+'・'+r.name+'</div><span class="badge '+(r.status==='in'?'bin':'bout')+'">'+(r.status==='in'?'在場中':'已離場')+'</span></div><div class="rm">'+r.brand+' ／ '+(r.or||'')+' ／ '+(r.dept||'')+' ／ '+(r.doctor||'')+'<br>'+r.date+' 進場 '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'<br>識別證：'+(r.badge||'')+'　<span class="badge '+(r.retBadge==='是'?'bry':'brn')+'">'+(r.retBadge?'歸還：'+r.retBadge:'-')+'</span><br>交換：'+r.idDoc+'<br><span class="badge '+(r.cert==='是'?'bcy':'bcn')+'">'+(r.cert==='是'?'持證 #'+r.certCard:'未持證')+'</span><br>進場簽名：'+(r.recorder||'')+(r.exitSigner?' ／ 離場簽名：'+r.exitSigner:'')+(r.note?' ／ 備註：'+r.note:'')+'</div></div>';}).join('');
 }
 
 function exportCSV(){
-  const month=document.getElementById('rpt-month').value;
-  const f=records.filter(r=>r.date.startsWith(month));
+  var month=document.getElementById('rpt-month').value;
+  var f=records.filter(function(r){return r.date.startsWith(month);});
   if(!f.length){toast('該月份無資料可匯出');return;}
-  const h=['日期','進場時間','離場時間','公司名稱','廠牌','姓名','聯絡電話','跟刀科別','主刀醫師','手術術式','手術房號','識別證號','是否歸還識別證','交換證件','持有證照','證照卡號','進場手術室人員簽名','離場手術室人員簽名','備註','狀態'];
-  const rows=f.map(r=>[r.date,r.time,r.exitTime||'',r.company,r.brand,r.name,r.phone,r.dept||'',r.doctor||'',r.surgery||'',r.or||'',r.badge||'',r.retBadge||'',r.idDoc,r.cert,r.certCard||'',r.recorder||'',r.exitSigner||'',r.note||'',r.status==='in'?'在場中':'已離場']);
-  const csv='\uFEFF'+[h,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`手術室門禁管理_${month}.csv`;a.click();toast('✅ CSV 匯出成功');
+  var h=['日期','進場時間','離場時間','公司名稱','廠牌','姓名','聯絡電話','跟刀科別','主刀醫師','手術術式','手術房號','識別證號','是否歸還識別證','交換證件','持有證照','證照卡號','進場手術室人員簽名','離場手術室人員簽名','備註','狀態'];
+  var rows=f.map(function(r){return[r.date,r.time,r.exitTime||'',r.company,r.brand,r.name,r.phone,r.dept||'',r.doctor||'',r.surgery||'',r.or||'',r.badge||'',r.retBadge||'',r.idDoc,r.cert,r.certCard||'',r.recorder||'',r.exitSigner||'',r.note||'',r.status==='in'?'在場中':'已離場'];});
+  var csv='\uFEFF'+[h].concat(rows).map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='手術室門禁管理_'+month+'.csv';a.click();toast('✅ CSV 匯出成功');
 }
-
-window.addEventListener('dbReady',()=>{
-  const q=window._query(window._collection(window._db,'records'),window._orderBy('createdAt','desc'));
-  window._onSnapshot(q,(snapshot)=>{
-    records=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-    updateStats();
-    if(currentMode==='nurse'){renderExitList();renderRecords();}
-  });
-});
 </script>
 </body>
 </html>
