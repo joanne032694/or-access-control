@@ -276,6 +276,20 @@ let records=[];
 let currentMode='vendor';
 
 function switchMode(mode){
+  if(mode==='nurse'){
+    const pwd=prompt('請輸入護理人員密碼：');
+    if(pwd!=='A030'){
+      toast('❌ 密碼錯誤');
+      return;
+    }
+  }
+  currentMode=mode;
+  document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
+  document.getElementById('nurse-mode').style.display=mode==='nurse'?'block':'none';
+  document.getElementById('mode-vendor').classList.toggle('active',mode==='vendor');
+  document.getElementById('mode-nurse').classList.toggle('active',mode==='nurse');
+  if(mode==='nurse'){renderExitList();renderRecords();}
+}
   currentMode=mode;
   document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
   document.getElementById('nurse-mode').style.display=mode==='nurse'?'block':'none';
