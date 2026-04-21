@@ -241,7 +241,7 @@ function updateStats(){
   document.getElementById('s-left').textContent=tr.filter(r=>r.status==='out').length;
 }
 updateStats();
-function toggleCert(){const r=document.querySelector('input[name=cert]:checked');const c=document.getElementById('cert-card');const y=r&&r.value==='是';c.disabled=!y;c.style.opacity=y?'1':'0.4';if(!y)c.value='';}
+function toggleCert(){const r=document.querySelector('input[name=cert]:checked');const c=document.getElementById('cert-card');const y=r&&r.value==='是';c.disabled=!y;c.style.opacity=y?'1':'0.4';if(!y)c.value='';document.querySelectorAll('.cert-opt').forEach(el=>{const radio=el.querySelector('input[type=radio]');if(radio&&radio.checked){el.style.borderColor='#7c3aed';el.style.background='#ede9fe';}else{el.style.borderColor='#e5e7eb';el.style.background='#fafafa';}});}
 function updChk(el,id){document.getElementById(id).classList.toggle('checked',el.checked);}
 function togOther(el,id){document.getElementById(id).classList.toggle('checked',el.checked);document.getElementById('other-text').style.display=el.checked?'block':'none';}
 function getIdChecked(){const v=[];document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>{if(c.checked){if(c.value==='其他'){const t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}});return v.join('、');}
