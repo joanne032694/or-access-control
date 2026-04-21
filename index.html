@@ -161,7 +161,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="fg">
         <label>跟刀科別<span class="req">*</span></label>
-        <select id="f-dept"><option value="">選擇科別</option><option>心臟外科</option><option>神經外科</option><option>骨科</option><option>泌尿科</option><option>婦產科</option><option>一般外科</option><option>胸腔外科</option><option>整形外科</option><option>耳鼻喉科</option><option>眼科</option></select>
+        <select id="f-dept"><option value="">選擇科別</option><option>心臟外科</option><option>神經外科</option><option>骨科</option><option>泌尿科</option><option>婦產科</option><option>一般外科</option><option>胸腔外科</option><option>整形外科</option><option>耳鼻喉科</option><option>眼科</option><option>其他</option></select>
       </div>
       <div class="fr2">
         <div class="fg"><label>主刀醫師<span class="req">*</span></label><input type="text" id="f-doctor" placeholder="醫師姓名"></div>
@@ -192,7 +192,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       <div class="notice">請核對廠商資料後，填寫以下資訊完成登記。</div>
       <div class="fr2">
         <div class="fg"><label>換證識別證號<span class="req">*</span></label><input type="text" id="f-badge" placeholder="識別證號碼"></div>
-        <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="f-recorder" placeholder="簽名（原編）"></div>
+        <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="f-recorder" placeholder="簽名（員編）"></div>
       </div>
       <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
       <div class="btn-row">
@@ -213,7 +213,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="fr2">
         <div class="fg"><label>離開時間<span class="req">*</span></label><input type="time" id="exit-time"></div>
-        <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="exit-signer" placeholder="簽名（原編）"></div>
+        <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="exit-signer" placeholder="簽名（員編）"></div>
       </div>
       <div class="btn-row">
         <button class="btn bg" onclick="cancelExit()">取消</button>
@@ -238,7 +238,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 <div class="toast" id="toast"></div>
-貼第3段（最後一段）：
 <script>
 var db;
 firebase.initializeApp({
