@@ -1,20 +1,320 @@
-const CACHE = 'or-pwa-v1';
-const ASSETS = ['/', '/index.html', '/manifest.json'];
-
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-  ));
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('/index.html')))
-  );
-});
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#7c3aed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="手術室門禁">
+<link rel="manifest" href="manifest.json">
+<title>手術室門禁管理系統</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap');
+:root{--c1:#7c3aed;--c1l:#ede9fe;--c2:#db2777;--c2l:#fce7f3;--c3:#059669;--c3l:#d1fae5;--c4:#d97706;--c4l:#fef3c7;--c5:#0284c7;--c5l:#e0f2fe;--bg:#f5f3ff;--white:#fff;--text:#1e1b4b;--text2:#6b7280;--text3:#9ca3af;--border:rgba(0,0,0,0.08);--radius:16px;--rsm:10px;--shadow:0 2px 8px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:24px}
+.app-header{background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);color:white;padding:14px 16px 10px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(124,58,237,0.3)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.hdr-title{font-size:15px;font-weight:700;letter-spacing:.02em}
+.hdr-sub{font-size:10px;opacity:.7;letter-spacing:.07em}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.spill{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);border-radius:20px;padding:3px 9px;font-size:11px}
+.sdot{width:6px;height:6px;border-radius:50%;background:#4ade80}
+.clock{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.top-nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.top-nav::-webkit-scrollbar{display:none}
+.tnav{flex:1;min-width:58px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 4px 6px;border:none;background:rgba(255,255,255,.12);border-radius:10px;cursor:pointer;color:rgba(255,255,255,.65);font-size:10px;font-family:inherit;font-weight:500;transition:all .18s;white-space:nowrap}
+.tnav svg{width:18px;height:18px;stroke-width:2}
+.tnav.t-entry.active{background:#7c3aed;color:#fff;box-shadow:0 2px 10px rgba(124,58,237,.6)}
+.tnav.t-exit.active{background:#db2777;color:#fff;box-shadow:0 2px 10px rgba(219,39,119,.6)}
+.tnav.t-records.active{background:#059669;color:#fff;box-shadow:0 2px 10px rgba(5,150,105,.6)}
+.tnav.t-report.active{background:#d97706;color:#fff;box-shadow:0 2px 10px rgba(217,119,6,.6)}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 12px 0}
+.sc{border-radius:var(--rsm);padding:10px 6px;text-align:center}
+.sc1{background:var(--c1l)}.sc2{background:var(--c2l)}.sc3{background:var(--c3l)}.sc4{background:var(--c4l)}
+.sn{font-size:22px;font-weight:700;line-height:1}
+.sn1{color:var(--c1)}.sn2{color:var(--c2)}.sn3{color:var(--c3)}.sn4{color:var(--c4)}
+.sl{font-size:10px;color:var(--text2);margin-top:4px;line-height:1.3}
+.panel{display:none;padding:12px}.panel.active{display:block}
+.fc{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:.5px solid var(--border);overflow:hidden;margin-bottom:12px}
+.ch{padding:10px 16px;font-size:11px;font-weight:700;letter-spacing:.06em}
+.chp{background:var(--c1l);color:var(--c1);border-bottom:1px solid rgba(124,58,237,.12)}
+.chk{background:var(--c2l);color:var(--c2);border-bottom:1px solid rgba(219,39,119,.12)}
+.chg{background:var(--c3l);color:var(--c3);border-bottom:1px solid rgba(5,150,105,.12)}
+.cha{background:var(--c4l);color:var(--c4);border-bottom:1px solid rgba(217,119,6,.12)}
+.chs{background:var(--c5l);color:var(--c5);border-bottom:1px solid rgba(2,132,199,.12)}
+.cb{padding:14px 16px}
+.notice{background:var(--c5l);border-left:3px solid var(--c5);border-radius:0 var(--rsm) var(--rsm) 0;padding:10px 14px;font-size:12px;color:#075985;margin-bottom:14px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px}
+.fg label .req{color:var(--c2);margin-left:2px}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;font-size:14px;border:1.5px solid #e5e7eb;border-radius:var(--rsm);background:#fafafa;color:var(--text);font-family:inherit;appearance:none;-webkit-appearance:none;transition:border-color .15s,box-shadow .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);background:var(--white);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.fg textarea{min-height:68px;resize:vertical}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cert-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);margin-bottom:8px;border:1.5px solid #e5e7eb;transition:all .15s}
+.cert-opt:has(input:checked){border-color:var(--c1);background:var(--c1l)}
+.cert-opt label{font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px}
+.cert-opt input[type=radio]{width:18px;height:18px;accent-color:var(--c1);flex-shrink:0}
+.cinp{flex:1;padding:6px 10px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:8px;background:var(--white);color:var(--text);font-family:inherit}
+.cinp:disabled{background:#f3f4f6;color:var(--text3)}
+.cinp:focus{outline:none;border-color:var(--c1)}
+.chk-row{display:flex;flex-wrap:wrap;gap:8px}
+.ci{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#fafafa;border-radius:var(--rsm);border:1.5px solid #e5e7eb;cursor:pointer;font-size:13px;color:var(--text);transition:all .15s}
+.ci input[type=checkbox]{width:16px;height:16px;accent-color:var(--c2)}
+.ci.checked{background:var(--c2l);border-color:var(--c2);color:var(--c2);font-weight:500}
+.oinp{width:100%;margin-top:8px;padding:8px 12px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:var(--rsm);background:#fafafa;color:var(--text);font-family:inherit}
+.oinp:focus{outline:none;border-color:var(--c1)}
+.btn-row{display:flex;gap:10px;padding-top:4px}
+.btn{flex:1;padding:13px;font-size:14px;font-weight:700;border-radius:var(--rsm);border:none;cursor:pointer;font-family:inherit;transition:all .15s}
+.bg{background:#f3f4f6;color:var(--text2)}.bp{background:var(--c1);color:white}.bk{background:var(--c2);color:white}.bgr{background:var(--c3);color:white}.ba{background:var(--c4);color:white}
+.exit-item{padding:14px 16px;border-bottom:.5px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.exit-item:last-child{border-bottom:none}
+.em{font-size:14px;font-weight:600;color:var(--text)}.es{font-size:12px;color:var(--text2);margin-top:3px}
+.ebtn{background:var(--c2);color:white;border:none;border-radius:var(--rsm);padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;line-height:1.4;text-align:center}
+.ri{padding:13px 16px;border-bottom:.5px solid #f3f4f6}.ri:last-child{border-bottom:none}
+.rt{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rn{font-size:14px;font-weight:600}.rm{font-size:12px;color:var(--text2);line-height:1.8}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.bin{background:var(--c3l);color:var(--c3)}.bout{background:#f3f4f6;color:#6b7280}
+.bcy{background:var(--c1l);color:var(--c1)}.bcn{background:#fee2e2;color:#dc2626}
+.bry{background:var(--c3l);color:var(--c3)}.brn{background:#fee2e2;color:#dc2626}
+.rpt-ctrl{background:var(--white);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow);border:.5px solid var(--border)}
+.rpt-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rpt-row input[type=month]{flex:1;padding:10px 12px;font-size:14px;border:1.5px solid #e5e7eb;border-radius:var(--rsm);background:#fafafa;color:var(--text);font-family:inherit}
+.rpt-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.rsc{border-radius:var(--rsm);padding:10px 8px;text-align:center}
+.rn2{font-size:20px;font-weight:700}.rl{font-size:10px;color:var(--text2);margin-top:3px}
+.empty{text-align:center;padding:36px 20px;color:var(--text3);font-size:13px}
+.emi{font-size:32px;margin-bottom:10px}
+.exit-ptag{font-size:14px;font-weight:600;color:var(--c2);padding:10px 14px;background:var(--c2l);border-radius:var(--rsm);margin-bottom:14px}
+.ret-row{display:flex;gap:10px;margin-top:4px}
+.ropt{display:flex;align-items:center;gap:6px;flex:1;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);border:1.5px solid #e5e7eb;cursor:pointer;font-size:14px;transition:all .15s}
+.ropt:has(input:checked).ry{border-color:var(--c3);background:var(--c3l);color:var(--c3);font-weight:600}
+.ropt:has(input:checked).rn_{border-color:#dc2626;background:#fee2e2;color:#dc2626;font-weight:600}
+.ropt input[type=radio]{width:17px;height:17px;flex-shrink:0}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,27,75,.92);color:white;padding:10px 22px;border-radius:24px;font-size:13px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style></head>
+<body>
+<div class="app-header">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-title">🏥 手術室門禁管理系統</div>
+      <div class="hdr-sub">OR ACCESS CONTROL SYSTEM · v3.2</div>
+    </div>
+    <div class="hdr-right">
+      <div class="spill"><div class="sdot"></div><span>正常</span></div>
+      <div class="clock" id="clock">00:00:00</div>
+    </div>
+  </div>
+  <div class="top-nav">
+    <button class="tnav t-entry active" onclick="showPanel('entry')" id="nav-entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 3h6v6M10 14L21 3M9 21H3v-6"/></svg>進場登記</button>
+    <button class="tnav t-exit" onclick="showPanel('exit')" id="nav-exit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H3v-6M15 10l-11 11M15 3h6v6"/></svg>離場換證</button>
+    <button class="tnav t-records" onclick="showPanel('records')" id="nav-records"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>進出紀錄</button>
+    <button class="tnav t-report" onclick="showPanel('report')" id="nav-report"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>月報表</button>
+  </div>
+</div>
+<div class="stats-row">
+  <div class="sc sc1"><div class="sn sn1" id="s-total">0</div><div class="sl">今日進場</div></div>
+  <div class="sc sc2"><div class="sn sn2" id="s-inside">0</div><div class="sl">目前在場</div></div>
+  <div class="sc sc3"><div class="sn sn3" id="s-pending">0</div><div class="sl">待換證</div></div>
+  <div class="sc sc4"><div class="sn sn4" id="s-left">0</div><div class="sl">已離場</div></div>
+</div>
+<div id="panel-entry" class="panel active">
+  <div class="fc"><div class="ch chp">📅 進場資訊</div><div class="cb">
+    <div class="notice">進場須由管控人員確認並完成登記，廠商無法自行辦理。</div>
+    <div class="fr2">
+      <div class="fg"><label>進場日期<span class="req">*</span></label><input type="date" id="f-date"></div>
+      <div class="fg"><label>進場時間<span class="req">*</span></label><input type="time" id="f-time"></div>
+    </div>
+  </div></div>
+  <div class="fc"><div class="ch chk">🏢 廠商資料</div><div class="cb">
+    <div class="fr2">
+      <div class="fg"><label>公司名稱<span class="req">*</span></label><input type="text" id="f-company" placeholder="公司全名"></div>
+      <div class="fg"><label>廠牌<span class="req">*</span></label><input type="text" id="f-brand" placeholder="產品廠牌"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label>姓名<span class="req">*</span></label><input type="text" id="f-name" placeholder="姓名"></div>
+      <div class="fg"><label>聯絡電話<span class="req">*</span></label><input type="tel" id="f-phone" placeholder="電話號碼"></div>
+    </div>
+    <div class="fg">
+      <label>取得台灣手術全期護理學會醫療器材專業人員手術病人安全研習會證照<span class="req">*</span></label>
+      <div class="cert-opt"><input type="radio" name="cert" id="cert-yes" value="是" onchange="toggleCert()"><label for="cert-yes">是　卡號</label><input type="text" class="cinp" id="cert-card" placeholder="請輸入卡號" disabled></div>
+      <div class="cert-opt"><input type="radio" name="cert" id="cert-no" value="否" onchange="toggleCert()"><label for="cert-no">否</label></div>
+    </div>
+    <div class="fg">
+      <label>交換證件<span class="req">*</span></label>
+      <div class="chk-row" id="id-checks">
+        <label class="ci" id="lbl-id"><input type="checkbox" value="身分證" onchange="updChk(this,'lbl-id')"> 身分證</label>
+        <label class="ci" id="lbl-hc"><input type="checkbox" value="健保卡" onchange="updChk(this,'lbl-hc')"> 健保卡</label>
+        <label class="ci" id="lbl-other"><input type="checkbox" value="其他" id="chk-other" onchange="togOther(this,'lbl-other')"> 其他</label>
+      </div>
+      <input type="text" class="oinp" id="other-text" placeholder="請說明其他證件" style="display:none">
+    </div>
+  </div></div>
+  <div class="fc"><div class="ch chs">🔬 手術資訊</div><div class="cb">
+    <div class="fr2">
+      <div class="fg"><label>跟刀科別<span class="req">*</span></label>
+        <select id="f-dept"><option value="">選擇科別</option><option>心臟外科</option><option>神經外科</option><option>骨科</option><option>泌尿科</option><option>婦產科</option><option>一般外科</option><option>胸腔外科</option><option>整形外科</option><option>耳鼻喉科</option><option>眼科</option></select>
+      </div>
+      <div class="fg"><label>主刀醫師<span class="req">*</span></label><input type="text" id="f-doctor" placeholder="醫師姓名"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label>手術術式<span class="req">*</span></label><input type="text" id="f-surgery" placeholder="術式名稱"></div>
+      <div class="fg"><label>手術房號<span class="req">*</span></label>
+        <select id="f-or"><option value="">選擇房號</option><option>OR-1</option><option>OR-2</option><option>OR-3</option><option>OR-4</option><option>OR-5</option><option>OR-6</option><option>OR-7</option><option>OR-8</option><option>OR-9</option><option>OR-10</option></select>
+      </div>
+    </div>
+  </div></div>
+  <div class="fc"><div class="ch chg">✍️ 記錄資訊</div><div class="cb">
+    <div class="fr2">
+      <div class="fg"><label>換證識別證號<span class="req">*</span></label><input type="text" id="f-badge" placeholder="識別證號碼"></div>
+      <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="f-recorder" placeholder="簽名（原編）"></div>
+    </div>
+    <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn bg" onclick="clearForm()">清除</button>
+      <button class="btn bp" onclick="submitEntry()">✅ 確認進場登記</button>
+    </div>
+  </div></div>
+</div>
+<div id="panel-exit" class="panel">
+  <div class="fc"><div class="ch chk">🚪 待離場人員</div><div id="exit-list"><div class="empty"><div class="emi">✅</div>目前無待離場人員</div></div></div>
+  <div class="fc" id="exit-form-card" style="display:none"><div class="ch chk">📝 離場確認</div><div class="cb">
+    <div class="exit-ptag" id="exit-form-person"></div>
+    <div class="fg"><label>是否歸還識別證<span class="req">*</span></label>
+      <div class="ret-row">
+        <label class="ropt ry"><input type="radio" name="ret-badge" value="是" style="accent-color:#059669"> 是，已歸還</label>
+        <label class="ropt rn_"><input type="radio" name="ret-badge" value="否" style="accent-color:#dc2626"> 否，未歸還</label>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label>離開時間<span class="req">*</span></label><input type="time" id="exit-time"></div>
+      <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="exit-signer" placeholder="簽名（原編）"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn bg" onclick="cancelExit()">取消</button>
+      <button class="btn bk" onclick="confirmExit()">✅ 確認離場完成</button>
+    </div>
+  </div></div>
+</div>
+<div id="panel-records" class="panel">
+  <div class="fc"><div class="ch chg">📋 進出紀錄</div><div id="record-list"><div class="empty"><div class="emi">📋</div>尚無進出紀錄</div></div></div>
+</div>
+<div id="panel-report" class="panel">
+  <div class="rpt-ctrl">
+    <div class="rpt-row"><input type="month" id="rpt-month"><button class="btn ba" style="flex:none;padding:10px 16px;font-size:13px" onclick="genReport()">產生報表</button></div>
+    <div class="btn-row"><button class="btn bgr" onclick="exportCSV()">📥 匯出 CSV</button></div>
+  </div>
+  <div id="rpt-summary" style="display:none" class="rpt-summary">
+    <div class="rsc sc1"><div class="rn2 sn1" id="rpt-total">0</div><div class="rl">進場總次</div></div>
+    <div class="rsc sc3"><div class="rn2 sn3" id="rpt-cert">0</div><div class="rl">持證人員</div></div>
+    <div class="rsc" style="background:#fee2e2"><div class="rn2" style="color:#dc2626" id="rpt-nocert">0</div><div class="rl">未持證</div></div>
+  </div>
+  <div class="fc"><div id="rpt-list"><div class="empty"><div class="emi">📊</div>請選擇月份並產生報表</div></div></div>
+</div>
+<div class="toast" id="toast"></div>貼第4段（最後一段！貼在第3段後面）：
+<script>
+const DB_KEY='or_records_v1';
+let records=JSON.parse(localStorage.getItem(DB_KEY)||'[]');
+function save(){localStorage.setItem(DB_KEY,JSON.stringify(records));}
+function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('zh-TW',{hour12:false});}
+updateClock();setInterval(updateClock,1000);
+const today=new Date().toISOString().split('T')[0];
+document.getElementById('f-date').value=today;
+document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
+document.getElementById('rpt-month').value=today.slice(0,7);
+function showPanel(name){
+  ['entry','exit','records','report'].forEach(p=>{document.getElementById('panel-'+p).classList.remove('active');document.getElementById('nav-'+p).classList.remove('active');});
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+  if(name==='exit') renderExitList();
+  if(name==='records') renderRecords();
+  window.scrollTo(0,0);
+}
+function updateStats(){
+  const tr=records.filter(r=>r.date===today);
+  document.getElementById('s-total').textContent=tr.length;
+  document.getElementById('s-inside').textContent=tr.filter(r=>r.status==='in').length;
+  document.getElementById('s-pending').textContent=tr.filter(r=>r.status==='in').length;
+  document.getElementById('s-left').textContent=tr.filter(r=>r.status==='out').length;
+}
+updateStats();
+function toggleCert(){const r=document.querySelector('input[name=cert]:checked');const c=document.getElementById('cert-card');const y=r&&r.value==='是';c.disabled=!y;c.style.opacity=y?'1':'0.4';if(!y)c.value='';}
+function updChk(el,id){document.getElementById(id).classList.toggle('checked',el.checked);}
+function togOther(el,id){document.getElementById(id).classList.toggle('checked',el.checked);document.getElementById('other-text').style.display=el.checked?'block':'none';}
+function getIdChecked(){const v=[];document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>{if(c.checked){if(c.value==='其他'){const t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}});return v.join('、');}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function submitEntry(){
+  const req=['f-date','f-time','f-company','f-brand','f-name','f-phone','f-dept','f-doctor','f-surgery','f-or','f-badge','f-recorder'];
+  const v={};for(const f of req){const x=document.getElementById(f).value.trim();if(!x){document.getElementById(f).focus();toast('請填寫所有必填欄位');return;}v[f]=x;}
+  const cert=(document.querySelector('input[name=cert]:checked')||{}).value||'';
+  if(!cert){toast('請選擇是否取得證照');return;}
+  const certCard=cert==='是'?document.getElementById('cert-card').value.trim():'';
+  if(cert==='是'&&!certCard){document.getElementById('cert-card').focus();toast('請輸入證照卡號');return;}
+  const idDoc=getIdChecked();if(!idDoc){toast('請選擇交換證件');return;}
+  records.push({id:Date.now(),date:v['f-date'],time:v['f-time'],company:v['f-company'],brand:v['f-brand'],name:v['f-name'],phone:v['f-phone'],cert,certCard,idDoc,dept:v['f-dept'],doctor:v['f-doctor'],surgery:v['f-surgery'],or:v['f-or'],badge:v['f-badge'],recorder:v['f-recorder'],note:document.getElementById('f-note').value,status:'in'});
+  save();updateStats();clearForm();toast('✅ 進場登記完成');
+}
+function clearForm(){
+  ['f-company','f-brand','f-name','f-phone','f-doctor','f-surgery','f-badge','f-recorder','f-note','cert-card'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-dept').value='';document.getElementById('f-or').value='';
+  document.getElementById('f-date').value=today;document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
+  document.querySelectorAll('input[name=cert]').forEach(r=>r.checked=false);
+  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>c.checked=false);
+  ['lbl-id','lbl-hc','lbl-other'].forEach(id=>document.getElementById(id).classList.remove('checked'));
+  document.getElementById('other-text').style.display='none';document.getElementById('other-text').value='';
+  document.getElementById('cert-card').disabled=true;document.getElementById('cert-card').style.opacity='0.4';
+}
+function renderExitList(){
+  const inside=records.filter(r=>r.status==='in');const el=document.getElementById('exit-list');
+  document.getElementById('exit-form-card').style.display='none';
+  if(!inside.length){el.innerHTML='<div class="empty"><div class="emi">✅</div>目前無待離場人員</div>';return;}
+  el.innerHTML=inside.map(r=>`<div class="exit-item"><div><div class="em">${r.company}（${r.brand}）· ${r.name}</div><div class="es">${r.or} · ${r.dept} · 進場 ${r.time} · 識別證 ${r.badge}</div></div><button class="ebtn" onclick="openExitForm(${r.id})">離場<br>換證</button></div>`).join('');
+}
+let exitId=null;
+function openExitForm(id){
+  exitId=id;const r=records.find(x=>x.id===id);
+  document.getElementById('exit-form-person').textContent=`${r.company}（${r.brand}）· ${r.name} · ${r.or}`;
+  document.getElementById('exit-time').value=new Date().toTimeString().slice(0,5);
+  document.getElementById('exit-signer').value='';
+  document.querySelectorAll('input[name=ret-badge]').forEach(x=>x.checked=false);
+  document.getElementById('exit-form-card').style.display='block';
+  document.getElementById('exit-form-card').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function cancelExit(){exitId=null;document.getElementById('exit-form-card').style.display='none';}
+function confirmExit(){
+  const ret=(document.querySelector('input[name=ret-badge]:checked')||{}).value||'';
+  if(!ret){toast('請選擇是否歸還識別證');return;}
+  const et=document.getElementById('exit-time').value;if(!et){toast('請填寫離開時間');return;}
+  const sg=document.getElementById('exit-signer').value.trim();if(!sg){toast('請填寫手術室人員簽名');return;}
+  const r=records.find(x=>x.id===exitId);
+  if(r){r.status='out';r.exitTime=et;r.retBadge=ret;r.exitSigner=sg;}
+  exitId=null;save();updateStats();renderExitList();toast('✅ 離場換證完成');
+}
+function renderRecords(){
+  const el=document.getElementById('record-list');
+  if(!records.length){el.innerHTML='<div class="empty"><div class="emi">📋</div>尚無進出紀錄</div>';return;}
+  el.innerHTML=[...records].reverse().map(r=>`<div class="ri"><div class="rt"><div class="rn">${r.company}・${r.name}</div><span class="badge ${r.status==='in'?'bin':'bout'}">${r.status==='in'?'在場中':'已離場'}</span></div><div class="rm">${r.brand} ／ ${r.or} ／ ${r.dept}<br>進場 ${r.date} ${r.time}${r.exitTime?' ／ 離場 '+r.exitTime:''}<br>識別證：${r.badge}　<span class="badge ${r.retBadge==='是'?'bry':'brn'}">${r.retBadge?'歸還：'+r.retBadge:'未離場'}</span><br>交換：${r.idDoc}<br><span class="badge ${r.cert==='是'?'bcy':'bcn'}">${r.cert==='是'?'持證 #'+r.certCard:'未持證'}</span><br>進場簽名：${r.recorder}${r.exitSigner?' ／ 離場簽名：'+r.exitSigner:''}</div></div>`).join('');
+}
+function genReport(){
+  const month=document.getElementById('rpt-month').value;if(!month)return;
+  const f=records.filter(r=>r.date.startsWith(month));const cy=f.filter(r=>r.cert==='是').length;
+  document.getElementById('rpt-total').textContent=f.length;document.getElementById('rpt-cert').textContent=cy;document.getElementById('rpt-nocert').textContent=f.length-cy;
+  document.getElementById('rpt-summary').style.display='grid';
+  const el=document.getElementById('rpt-list');
+  if(!f.length){el.innerHTML='<div class="empty"><div class="emi">📊</div>該月份無進出紀錄</div>';return;}
+  el.innerHTML=f.map(r=>`<div class="ri"><div class="rt"><div class="rn">${r.company}・${r.name}</div><span class="badge ${r.status==='in'?'bin':'bout'}">${r.status==='in'?'在場中':'已離場'}</span></div><div class="rm">${r.brand} ／ ${r.or} ／ ${r.dept} ／ ${r.doctor}<br>${r.date} 進場 ${r.time}${r.exitTime?' ／ 離場 '+r.exitTime:''}<br>識別證：${r.badge}　<span class="badge ${r.retBadge==='是'?'bry':'brn'}">${r.retBadge?'歸還：'+r.retBadge:'-'}</span><br>交換：${r.idDoc}<br><span class="badge ${r.cert==='是'?'bcy':'bcn'}">${r.cert==='是'?'持證 #'+r.certCard:'未持證'}</span><br>進場簽名：${r.recorder}${r.exitSigner?' ／ 離場簽名：'+r.exitSigner:''}${r.note?' ／ 備註：'+r.note:''}</div></div>`).join('');
+}
+function exportCSV(){
+  const month=document.getElementById('rpt-month').value;const f=records.filter(r=>r.date.startsWith(month));
+  if(!f.length){toast('該月份無資料可匯出');return;}
+  const h=['日期','進場時間','離場時間','公司名稱','廠牌','姓名','聯絡電話','跟刀科別','主刀醫師','手術術式','手術房號','識別證號','是否歸還識別證','交換證件','持有證照','證照卡號','進場手術室人員簽名','離場手術室人員簽名','備註','狀態'];
+  const rows=f.map(r=>[r.date,r.time,r.exitTime||'',r.company,r.brand,r.name,r.phone,r.dept,r.doctor,r.surgery,r.or,r.badge,r.retBadge||'',r.idDoc,r.cert,r.certCard||'',r.recorder,r.exitSigner||'',r.note||'',r.status==='in'?'在場中':'已離場']);
+  const csv='\uFEFF'+[h,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`手術室門禁管理_${month}.csv`;a.click();toast('✅ CSV 匯出成功');
+}
+</script>
+</body>
+</html>
