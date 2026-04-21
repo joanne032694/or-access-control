@@ -160,7 +160,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       <div class="fg">
         <label>跟刀科別<span class="req">*</span></label>
         <select id="f-dept"><option value="">選擇科別</option><option>心臟外科</option><option>神經外科</option><option>骨科</option><option>泌尿科</option><option>婦產科</option><option>一般外科</option><option>胸腔外科</option><option>整形外科</option><option>耳鼻喉科</option><option>眼科</option></select>
-      </div>其他</option><option>
+      </div>
       <div class="fr2">
         <div class="fg"><label>主刀醫師<span class="req">*</span></label><input type="text" id="f-doctor" placeholder="醫師姓名"></div>
         <div class="fg"><label>手術術式<span class="req">*</span></label><input type="text" id="f-surgery" placeholder="術式名稱"></div>
@@ -190,7 +190,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       <div class="notice">請核對廠商資料後，填寫以下資訊完成登記。</div>
       <div class="fr2">
         <div class="fg"><label>換證識別證號<span class="req">*</span></label><input type="text" id="f-badge" placeholder="識別證號碼"></div>
-        <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="f-recorder" placeholder="簽名（員編）"></div>
+        <div class="fg"><label>手術室人員簽名<span class="req">*</span></label><input type="text" id="f-recorder" placeholder="簽名（原編）"></div>
       </div>
       <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
       <div class="btn-row">
@@ -239,12 +239,12 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 <script>
 var db;
 firebase.initializeApp({
-  apiKey:"AIzaSyAX2qgrC7ZL5cjrsJYvOJcVkKHcWsWouqc",
-  authDomain:"or-access-control-system.firebaseapp.com",
-  projectId:"or-access-control-system",
-  storageBucket:"or-access-control-system.firebasestorage.app",
-  messagingSenderId:"534273733946",
-  appId:"1:534273733946:web:698d5a63da409d637fcc03"
+  apiKey:"AIzaSyA4rWLD_UwSyhZ66ODu8Ou2ZiETHdEsjnw",
+  authDomain:"or-system-f66b6.firebaseapp.com",
+  projectId:"or-system-f66b6",
+  storageBucket:"or-system-f66b6.firebasestorage.app",
+  messagingSenderId:"603922688260",
+  appId:"1:603922688260:web:6f1cf75558646d74b58851"
 });
 db=firebase.firestore();
 
@@ -412,7 +412,7 @@ function confirmExit(){
 function renderRecords(){
   var el=document.getElementById('record-list');
   if(!records.length){el.innerHTML='<div class="empty"><div class="emi">📋</div>尚無進出紀錄</div>';return;}
-  el.innerHTML=records.map(function(r){return '<div class="ri"><div class="rt"><div class="rn">'+r.company+'・'+r.name+'</div><span class="badge '+(r.status==='in'?'bin':'bout')+'">'+(r.status==='in'?'在場中':'已離場')+'</span></div><div class="rm">'+r.brand+' ／ '+(r.dept||'')+' ／ '+(r.doctor||'')+'<br>進場 '+r.date+' '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'<br>識別證：'+(r.badge||'')+'　<span class="badge '+(r.retBadge==='是'?'bry':'brn')+'">'+(r.retBadge?'歸還：'+r.retBadge:'未離場')+'</span><br>交換：'+r.idDoc+'<br><span class="badge '+(r.cert==='是'?'bcy':'bcn')+'">'+(r.cert==='是'?'持證 #'+r.certCard:'未持證')+'</span><br>進場簽名：'+(r.recorder||'')+(r.exitSigner?' ／ 離場簽名：'+r.exitSigner:'')+'</div></div>';}).join('');
+  el.innerHTML=records.map(function(r){return '<div class="ri"><div class="rt"><div class="rn">'+r.company+'・'+r.name+'</div><span class="badge '+(r.status==='in'?'bin':'bout')+'">'+(r.status==='in'?'在場中':'已離場')+'</span></div><div class="rm">'+r.brand+' ／ '+(r.dept||'')+' ／ '+(r.doctor||'')+' ／ '+(r.surgery||'')+'<br>進場 '+r.date+' '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'<br>識別證：'+(r.badge||'')+'　<span class="badge '+(r.retBadge==='是'?'bry':'brn')+'">'+(r.retBadge?'歸還：'+r.retBadge:'未離場')+'</span><br>交換：'+r.idDoc+'<br><span class="badge '+(r.cert==='是'?'bcy':'bcn')+'">'+(r.cert==='是'?'持證 #'+r.certCard:'未持證')+'</span><br>進場簽名：'+(r.recorder||'')+(r.exitSigner?' ／ 離場簽名：'+r.exitSigner:'')+'</div></div>';}).join('');
 }
 
 function genReport(){
