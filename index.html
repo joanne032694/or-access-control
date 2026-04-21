@@ -1,3 +1,6 @@
+沒關係！這次直接在 GitHub 編輯器裡貼，我分4段給你：
+先去 GitHub 點 index.html → ✏️ 鉛筆 → Ctrl+A → Delete 清空
+然後貼第1段：
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -52,17 +55,18 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--c1);background:var(--white);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
 .fg textarea{min-height:68px;resize:vertical}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.cert-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);margin-bottom:8px;border:1.5px solid #e5e7eb;transition:all .15s}
-.cert-opt:has(input:checked){border-color:var(--c1);background:var(--c1l)}
-.cert-opt label{font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px}
+.cert-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);margin-bottom:8px;border:2px solid #e5e7eb;transition:all .15s;cursor:pointer}
+.cert-opt.selected{border-color:#7c3aed;background:#ede9fe}
+.cert-opt label{font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:500}
+.cert-opt.selected label{color:#7c3aed;font-weight:700}
 .cert-opt input[type=radio]{width:18px;height:18px;accent-color:var(--c1);flex-shrink:0}
 .cinp{flex:1;padding:6px 10px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:8px;background:var(--white);color:var(--text);font-family:inherit}
 .cinp:disabled{background:#f3f4f6;color:var(--text3)}
 .cinp:focus{outline:none;border-color:var(--c1)}
 .chk-row{display:flex;flex-wrap:wrap;gap:8px}
-.ci{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#fafafa;border-radius:var(--rsm);border:1.5px solid #e5e7eb;cursor:pointer;font-size:13px;color:var(--text);transition:all .15s}
+.ci{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#fafafa;border-radius:var(--rsm);border:2px solid #e5e7eb;cursor:pointer;font-size:13px;color:var(--text);transition:all .15s;font-weight:500}
 .ci input[type=checkbox]{width:16px;height:16px;accent-color:var(--c2)}
-.ci.checked{background:var(--c2l);border-color:var(--c2);color:var(--c2);font-weight:500}
+.ci.checked{background:#db2777;border-color:#db2777;color:#fff;font-weight:700}
 .oinp{width:100%;margin-top:8px;padding:8px 12px;font-size:13px;border:1.5px solid #e5e7eb;border-radius:var(--rsm);background:#fafafa;color:var(--text);font-family:inherit}
 .oinp:focus{outline:none;border-color:var(--c1)}
 .btn-row{display:flex;gap:10px;padding-top:4px}
@@ -89,9 +93,9 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .emi{font-size:32px;margin-bottom:10px}
 .exit-ptag{font-size:14px;font-weight:600;color:var(--c2);padding:10px 14px;background:var(--c2l);border-radius:var(--rsm);margin-bottom:14px}
 .ret-row{display:flex;gap:10px;margin-top:4px}
-.ropt{display:flex;align-items:center;gap:6px;flex:1;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);border:1.5px solid #e5e7eb;cursor:pointer;font-size:14px;transition:all .15s}
-.ropt:has(input:checked).ry{border-color:var(--c3);background:var(--c3l);color:var(--c3);font-weight:600}
-.ropt:has(input:checked).rn_{border-color:#dc2626;background:#fee2e2;color:#dc2626;font-weight:600}
+.ropt{display:flex;align-items:center;gap:6px;flex:1;padding:10px 14px;background:#fafafa;border-radius:var(--rsm);border:2px solid #e5e7eb;cursor:pointer;font-size:14px;transition:all .15s;font-weight:500}
+.ropt.sel-yes{border-color:#059669;background:#d1fae5;color:#059669;font-weight:700}
+.ropt.sel-no{border-color:#dc2626;background:#fee2e2;color:#dc2626;font-weight:700}
 .ropt input[type=radio]{width:17px;height:17px;flex-shrink:0}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(30,27,75,.92);color:white;padding:10px 22px;border-radius:24px;font-size:13px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -101,7 +105,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   <div class="hdr-top">
     <div>
       <div class="hdr-title">🏥 手術室門禁管理系統</div>
-      <div class="hdr-sub">OR ACCESS CONTROL SYSTEM · v3.2</div>
+      <div class="hdr-sub">OR ACCESS CONTROL SYSTEM · v3.3</div>
     </div>
     <div class="hdr-right">
       <div class="spill"><div class="sdot"></div><span>正常</span></div>
@@ -140,8 +144,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
     </div>
     <div class="fg">
       <label>取得台灣手術全期護理學會醫療器材專業人員手術病人安全研習會證照<span class="req">*</span></label>
-      <div class="cert-opt"><input type="radio" name="cert" id="cert-yes" value="是" onchange="toggleCert()"><label for="cert-yes">是　卡號</label><input type="text" class="cinp" id="cert-card" placeholder="請輸入卡號" disabled></div>
-      <div class="cert-opt"><input type="radio" name="cert" id="cert-no" value="否" onchange="toggleCert()"><label for="cert-no">否</label></div>
+      <div class="cert-opt" id="cert-opt-yes"><input type="radio" name="cert" id="cert-yes" value="是" onchange="toggleCert()"><label for="cert-yes">✅ 是　卡號</label><input type="text" class="cinp" id="cert-card" placeholder="請輸入卡號" disabled></div>
+      <div class="cert-opt" id="cert-opt-no"><input type="radio" name="cert" id="cert-no" value="否" onchange="toggleCert()"><label for="cert-no">❌ 否</label></div>
     </div>
     <div class="fg">
       <label>交換證件<span class="req">*</span></label>
@@ -185,8 +189,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
     <div class="exit-ptag" id="exit-form-person"></div>
     <div class="fg"><label>是否歸還識別證<span class="req">*</span></label>
       <div class="ret-row">
-        <label class="ropt ry"><input type="radio" name="ret-badge" value="是" style="accent-color:#059669"> 是，已歸還</label>
-        <label class="ropt rn_"><input type="radio" name="ret-badge" value="否" style="accent-color:#dc2626"> 否，未歸還</label>
+        <label class="ropt" id="ropt-yes" onclick="selRet('yes')"><input type="radio" name="ret-badge" value="是"> ✅ 是，已歸還</label>
+        <label class="ropt" id="ropt-no" onclick="selRet('no')"><input type="radio" name="ret-badge" value="否"> ❌ 否，未歸還</label>
       </div>
     </div>
     <div class="fr2">
@@ -214,7 +218,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
   <div class="fc"><div id="rpt-list"><div class="empty"><div class="emi">📊</div>請選擇月份並產生報表</div></div></div>
 </div>
-<div class="toast" id="toast"></div>貼第4段（最後一段！貼在第3段後面）：
+<div class="toast" id="toast"></div>
 <script>
 const DB_KEY='or_records_v1';
 let records=JSON.parse(localStorage.getItem(DB_KEY)||'[]');
@@ -241,11 +245,23 @@ function updateStats(){
   document.getElementById('s-left').textContent=tr.filter(r=>r.status==='out').length;
 }
 updateStats();
-function toggleCert(){const r=document.querySelector('input[name=cert]:checked');const c=document.getElementById('cert-card');const y=r&&r.value==='是';c.disabled=!y;c.style.opacity=y?'1':'0.4';if(!y)c.value='';document.querySelectorAll('.cert-opt').forEach(el=>{const radio=el.querySelector('input[type=radio]');if(radio&&radio.checked){el.style.borderColor='#7c3aed';el.style.background='#ede9fe';}else{el.style.borderColor='#e5e7eb';el.style.background='#fafafa';}});}
+function toggleCert(){
+  const r=document.querySelector('input[name=cert]:checked');
+  const c=document.getElementById('cert-card');
+  const y=r&&r.value==='是';
+  c.disabled=!y;c.style.opacity=y?'1':'0.4';if(!y)c.value='';
+  document.getElementById('cert-opt-yes').classList.toggle('selected',y);
+  document.getElementById('cert-opt-no').classList.toggle('selected',!y&&r!=null);
+}
 function updChk(el,id){document.getElementById(id).classList.toggle('checked',el.checked);}
 function togOther(el,id){document.getElementById(id).classList.toggle('checked',el.checked);document.getElementById('other-text').style.display=el.checked?'block':'none';}
 function getIdChecked(){const v=[];document.querySelectorAll('#id-checks input[type=checkbox]').forEach(c=>{if(c.checked){if(c.value==='其他'){const t=document.getElementById('other-text').value.trim();v.push(t?'其他:'+t:'其他');}else v.push(c.value);}});return v.join('、');}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function selRet(which){
+  document.querySelector('input[name=ret-badge][value="'+(which==='yes'?'是':'否')+'"]').checked=true;
+  document.getElementById('ropt-yes').className='ropt'+(which==='yes'?' sel-yes':'');
+  document.getElementById('ropt-no').className='ropt'+(which==='no'?' sel-no':'');
+}
 function submitEntry(){
   const req=['f-date','f-time','f-company','f-brand','f-name','f-phone','f-dept','f-doctor','f-surgery','f-or','f-badge','f-recorder'];
   const v={};for(const f of req){const x=document.getElementById(f).value.trim();if(!x){document.getElementById(f).focus();toast('請填寫所有必填欄位');return;}v[f]=x;}
@@ -266,6 +282,8 @@ function clearForm(){
   ['lbl-id','lbl-hc','lbl-other'].forEach(id=>document.getElementById(id).classList.remove('checked'));
   document.getElementById('other-text').style.display='none';document.getElementById('other-text').value='';
   document.getElementById('cert-card').disabled=true;document.getElementById('cert-card').style.opacity='0.4';
+  document.getElementById('cert-opt-yes').classList.remove('selected');
+  document.getElementById('cert-opt-no').classList.remove('selected');
 }
 function renderExitList(){
   const inside=records.filter(r=>r.status==='in');const el=document.getElementById('exit-list');
@@ -280,6 +298,8 @@ function openExitForm(id){
   document.getElementById('exit-time').value=new Date().toTimeString().slice(0,5);
   document.getElementById('exit-signer').value='';
   document.querySelectorAll('input[name=ret-badge]').forEach(x=>x.checked=false);
+  document.getElementById('ropt-yes').className='ropt';
+  document.getElementById('ropt-no').className='ropt';
   document.getElementById('exit-form-card').style.display='block';
   document.getElementById('exit-form-card').scrollIntoView({behavior:'smooth',block:'start'});
 }
