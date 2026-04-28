@@ -27,50 +27,53 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .mode-bar{background:rgba(0,0,0,.2);border-radius:10px;padding:6px;display:flex;gap:4px;margin-top:8px}
 .mode-btn{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:transparent;color:rgba(255,255,255,.6)}
 .mode-btn.active{background:white;color:#7c3aed;box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.mode-btn:disabled{opacity:.4;cursor:not-allowed}
-.top-nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 12px 6px;background:rgba(0,0,0,.15)}
+.top-nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 12px 2px;background:rgba(0,0,0,.15)}
 .top-nav::-webkit-scrollbar{display:none}
-.tnav{flex:1;min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border:2px solid rgba(255,255,255,.0);background:rgba(255,255,255,.92);border-radius:10px;cursor:pointer;color:#4b5563;font-size:11px;font-family:inherit;font-weight:700;transition:all .18s;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.tnav{flex:1;min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border:2px solid rgba(255,255,255,.5);background:rgba(255,255,255,.25);border-radius:10px;cursor:pointer;color:rgba(255,255,255,.95);font-size:11px;font-family:inherit;font-weight:600;transition:all .18s;white-space:nowrap}
 .tnav svg{width:20px;height:20px;stroke-width:2}
-.tnav.t-entry.active{background:#7c3aed;color:#fff;border-color:#7c3aed;box-shadow:0 3px 12px rgba(124,58,237,.5);font-weight:700}
-.tnav.t-exit.active{background:#db2777;color:#fff;border-color:#db2777;box-shadow:0 3px 12px rgba(219,39,119,.5);font-weight:700}
-.tnav.t-records.active{background:#059669;color:#fff;border-color:#059669;box-shadow:0 3px 12px rgba(5,150,105,.5);font-weight:700}
-.tnav.t-report.active{background:#d97706;color:#fff;border-color:#d97706;box-shadow:0 3px 12px rgba(217,119,6,.5);font-weight:700}
-/* ===== STATS ROW ===== */
+.tnav.t-entry.active{background:#7c3aed;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+.tnav.t-exit.active{background:#db2777;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+.tnav.t-records.active{background:#059669;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+.tnav.t-report.active{background:#d97706;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
+
+/* ── 統計卡片（可點擊） ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 12px 0}
-.sc{border-radius:var(--rsm);padding:12px 6px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;user-select:none;position:relative}
-.sc:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.12)}
-.sc:active{transform:scale(.97)}
-.sc::after{content:'▾';position:absolute;bottom:4px;right:6px;font-size:10px;opacity:.5}
-.sc1{background:var(--c1l)}.sc2{background:var(--c2l)}.sc3{background:var(--c3l)}.sc4{background:var(--c4l)}
+.sc{border-radius:var(--rsm);padding:12px 6px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;user-select:none}
+.sc:active{transform:scale(.95)}
+.sc.active-card{outline:2.5px solid var(--card-color,#7c3aed);transform:scale(.97)}
+.sc1{background:var(--c1l);--card-color:var(--c1)}
+.sc2{background:var(--c2l);--card-color:var(--c2)}
+.sc3{background:var(--c3l);--card-color:var(--c3)}
+.sc4{background:var(--c4l);--card-color:var(--c4)}
 .sn{font-size:26px;font-weight:700;line-height:1}
 .sn1{color:var(--c1)}.sn2{color:var(--c2)}.sn3{color:var(--c3)}.sn4{color:var(--c4)}
 .sl{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.3}
-/* ===== PEOPLE MODAL ===== */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;animation:slideUp .22s ease-out}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-handle{width:40px;height:4px;border-radius:2px;background:#e5e7eb;margin:12px auto 0;flex-shrink:0}
-.modal-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f3f4f6;flex-shrink:0}
-.modal-title{font-size:15px;font-weight:700}
-.modal-close{width:30px;height:30px;border-radius:50%;background:#f3f4f6;border:none;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2)}
-.modal-body{overflow-y:auto;flex:1;padding:0}
-.modal-empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
-/* ===== PERSON CARD IN MODAL ===== */
-.pcard{padding:14px 16px;border-bottom:1px solid #f9f8ff;display:flex;align-items:flex-start;gap:12px}
-.pcard:last-child{border-bottom:none}
-.pavatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;margin-top:2px}
-.pinfo{flex:1;min-width:0}
-.pname{font-size:15px;font-weight:700;color:var(--text)}
-.pcomp{font-size:13px;color:var(--text2);margin-top:1px}
-.pmeta{font-size:12px;color:var(--text3);margin-top:4px;line-height:1.7}
-.pbadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px;flex-shrink:0;align-self:flex-start;margin-top:2px}
-.pb-in{background:#d1fae5;color:#059669}
-.pb-wait{background:#fef9c3;color:#a16207}
-.pb-out{background:#f3f4f6;color:#6b7280}
-.overday-tag{display:inline-block;background:#fef3c7;color:#92400e;border:1px solid #f59e0b;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;margin-left:6px}
-/* ===== REST ===== */
+.sc-tap{font-size:9px;color:var(--text3);margin-top:3px}
+
+/* ── 底部滑出名單 ── */
+.list-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:flex-end}
+.list-overlay.open{display:flex;animation:lo-in .18s ease}
+@keyframes lo-in{from{opacity:0}to{opacity:1}}
+.list-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-height:80vh;display:flex;flex-direction:column;animation:ls-up .22s cubic-bezier(.32,1,.6,1)}
+@keyframes ls-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.ls-hdr{padding:16px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f3f4f6;flex-shrink:0}
+.ls-title{font-size:16px;font-weight:700}
+.ls-right{display:flex;align-items:center;gap:8px}
+.ls-count{font-size:13px;font-weight:700;padding:4px 12px;border-radius:20px}
+.ls-close{width:32px;height:32px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.ls-body{overflow-y:auto;flex:1}
+.lp{padding:14px 16px;border-bottom:.5px solid #f3f4f6;display:flex;align-items:flex-start;gap:12px}
+.lp:last-child{border-bottom:none}
+.lp-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.lp-info{flex:1;min-width:0}
+.lp-name{font-size:15px;font-weight:600}
+.lp-co{font-size:12px;color:var(--text2);margin-top:2px}
+.lp-det{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.6}
+.lp-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.lp-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.ls-empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px}
+.ls-empty-i{font-size:36px;margin-bottom:12px}
+
 .panel{display:none;padding:12px}.panel.active{display:block}
 .fc{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:.5px solid var(--border);overflow:hidden;margin-bottom:12px}
 .ch{padding:12px 16px;font-size:13px;font-weight:700;letter-spacing:.06em}
@@ -142,19 +145,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .maint-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px}
 </style></head>
 <body>
-
-<!-- ===== PEOPLE MODAL ===== -->
-<div class="modal-overlay" id="people-modal" onclick="closeModal(event)">
-  <div class="modal-sheet">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title">人員清單</div>
-      <button class="modal-close" onclick="closePeopleModal()">✕</button>
-    </div>
-    <div class="modal-body" id="modal-body"></div>
-  </div>
-</div>
-
 <div class="app-header">
   <div class="hdr-top">
     <div>
@@ -212,6 +202,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
         </div>
         <input type="text" class="oinp" id="other-text" placeholder="請說明其他證件" style="display:none">
       </div>
+
       <div class="fg">
         <label>本次進出類型<span class="req">*</span></label>
         <div class="type-toggle">
@@ -219,6 +210,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           <button class="type-btn" id="type-maint" onclick="setType('maint')">🔧 維修保養儀器</button>
         </div>
       </div>
+
       <div id="surg-block">
         <div class="lock-group">
           <div class="lock-group-hdr">
@@ -227,7 +219,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           </div>
           <div class="fg" style="margin-bottom:14px">
             <label>跟刀科別<span class="req">*</span></label>
-            <select id="f-dept">
+            <select id="f-dept" onchange="onDeptChange()">
               <option value="">選擇科別</option>
               <option>心臟外科</option><option>神經外科</option><option>骨科</option>
               <option>泌尿科</option><option>婦產科</option><option>一般外科</option>
@@ -238,15 +230,20 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           <div class="fr2">
             <div class="fg" style="margin-bottom:0">
               <label>主刀醫師<span class="req">*</span></label>
-              <input type="text" id="f-doctor" placeholder="醫師姓名">
+              <select id="f-doctor" onchange="onDoctorChange()">
+                <option value="">請先選科別</option>
+              </select>
             </div>
             <div class="fg" style="margin-bottom:0">
               <label>手術術式<span class="req">*</span></label>
-              <input type="text" id="f-surgery" placeholder="術式名稱">
+              <select id="f-surgery">
+                <option value="">請先選主刀醫師</option>
+              </select>
             </div>
           </div>
         </div>
       </div>
+
       <div id="maint-block" style="display:none">
         <div class="maint-group">
           <div class="maint-group-hdr">🔧 維修保養儀器資訊</div>
@@ -266,26 +263,35 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           </div>
         </div>
       </div>
-      <button id="vendor-submit-btn" onclick="vendorSubmit()" style="width:100%;background:#d97706;border:none;border-radius:10px;padding:16px 14px;font-size:16px;color:#fff;margin-top:8px;text-align:center;font-weight:700;letter-spacing:.02em;cursor:pointer;font-family:inherit;opacity:.4;pointer-events:none">
-        📋 填寫完畢，送出給護理人員 👇
-      </button>
+
+      <div style="background:#d97706;border-radius:10px;padding:16px 14px;font-size:16px;color:#fff;margin-top:8px;text-align:center;font-weight:700;letter-spacing:.02em">
+        填完後請交給護理人員繼續操作 👇
+      </div>
     </div></div>
   </div>
 </div>
 
 <div id="nurse-mode" style="display:none">
   <div class="stats-row">
-    <div class="sc sc1" onclick="openPeopleModal('all')" title="點擊查看今日進場人員">
-      <div class="sn sn1" id="s-total">0</div><div class="sl">今日進場</div>
+    <div class="sc sc1" onclick="openStatList('total')">
+      <div class="sn sn1" id="s-total">0</div>
+      <div class="sl">今日進場</div>
+      <div class="sc-tap">▼ 查看名單</div>
     </div>
-    <div class="sc sc2" onclick="openPeopleModal('inside')" title="點擊查看目前在場人員">
-      <div class="sn sn2" id="s-inside">0</div><div class="sl">目前在場</div>
+    <div class="sc sc2" onclick="openStatList('inside')">
+      <div class="sn sn2" id="s-inside">0</div>
+      <div class="sl">目前在場</div>
+      <div class="sc-tap">▼ 查看名單</div>
     </div>
-    <div class="sc sc3" onclick="openPeopleModal('pending')" title="點擊查看待換證人員">
-      <div class="sn sn3" id="s-pending">0</div><div class="sl">待換證</div>
+    <div class="sc sc3" onclick="openStatList('pending')">
+      <div class="sn sn3" id="s-pending">0</div>
+      <div class="sl">待換證</div>
+      <div class="sc-tap">▼ 查看名單</div>
     </div>
-    <div class="sc sc4" onclick="openPeopleModal('left')" title="點擊查看已離場人員">
-      <div class="sn sn4" id="s-left">0</div><div class="sl">已離場</div>
+    <div class="sc sc4" onclick="openStatList('left')">
+      <div class="sn sn4" id="s-left">0</div>
+      <div class="sl">已離場</div>
+      <div class="sc-tap">▼ 查看名單</div>
     </div>
   </div>
   <div class="top-nav">
@@ -304,7 +310,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
       <div class="btn-row">
         <button class="btn bg" onclick="clearNurseForm()">清除</button>
-        <button class="btn bp" id="entry-submit-btn" onclick="submitEntry()" disabled style="opacity:.4;cursor:not-allowed">✅ 確認進場登記</button>
+        <button class="btn bp" onclick="submitEntry()">✅ 確認進場登記</button>
       </div>
     </div></div>
   </div>
@@ -344,8 +350,22 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
     <div class="fc"><div id="rpt-list"><div class="empty"><div class="emi">📊</div>請選擇月份並產生報表</div></div></div>
   </div>
 </div>
-<div class="toast" id="toast"></div>
 
+<!-- ── 人員名單浮層 ── -->
+<div class="list-overlay" id="list-overlay" onclick="closeStatList(event)">
+  <div class="list-sheet">
+    <div class="ls-hdr">
+      <div class="ls-title" id="ls-title">人員名單</div>
+      <div class="ls-right">
+        <div class="ls-count" id="ls-count"></div>
+        <button class="ls-close" onclick="closeStatList(null,true)">✕</button>
+      </div>
+    </div>
+    <div class="ls-body" id="ls-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 <script>
 var db;
 firebase.initializeApp({
@@ -358,120 +378,121 @@ firebase.initializeApp({
 });
 db=firebase.firestore();
 
-// ===== MODAL LOGIC =====
-var avatarColors=['#7c3aed','#0891b2','#059669','#d97706','#dc2626','#db2777','#0284c7','#9333ea'];
-function getAvatarColor(name){
-  var h=0;for(var i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))%avatarColors.length;
-  return avatarColors[h];
-}
-function openPeopleModal(type){
-  var titles={all:'今日進場人員',inside:'目前在場人員',pending:'待換證人員',left:'今日已離場人員'};
-  var filtered;
-  if(type==='all') filtered=records.filter(function(r){return r.date===today;});
-  else if(type==='inside') filtered=records.filter(function(r){return r.status==='in';});
-  else if(type==='pending') filtered=records.filter(function(r){return r.status==='in';});
-  else if(type==='left') filtered=records.filter(function(r){return r.date===today&&r.status==='out';});
-  document.getElementById('modal-title').textContent=titles[type]+'（'+filtered.length+'人）';
-  var body=document.getElementById('modal-body');
-  if(!filtered.length){
-    body.innerHTML='<div class="modal-empty">目前沒有人員資料</div>';
-  } else {
-    body.innerHTML=filtered.map(function(r){
-      var isMaint=r.entryType==='maint';
-      var detail=isMaint
-        ?'🔧 維修：'+(r.maintDept||'')+(r.maintDevice?' · '+r.maintDevice:'')
-        :'🔪 '+(r.dept||'')+' · '+(r.doctor||'');
-      var timeInfo='進場 '+r.time;
-      if(r.exitTime) timeInfo+=' · 離場 '+r.exitTime;
-      var isOverday=r.date&&r.date!==today;
-      var overdayHtml=isOverday?'<span class="overday-tag">⚠️ '+r.date+'</span>':'';
-      var statusCls=r.status==='in'?'pb-in':'pb-out';
-      var statusTxt=r.status==='in'?'在場中':'已離場';
-      var certHtml=r.cert==='是'?'<span style="color:#059669;font-size:11px">✅ 持證</span>':'<span style="color:#dc2626;font-size:11px">❌ 未持證</span>';
-      var color=getAvatarColor(r.name||'?');
-      var initial=(r.name||'?').slice(0,1);
-      return '<div class="pcard">'
-        +'<div class="pavatar" style="background:'+color+'22;color:'+color+'">'+initial+'</div>'
-        +'<div class="pinfo">'
-          +'<div class="pname">'+r.name+' '+overdayHtml+'</div>'
-          +'<div class="pcomp">'+r.company+' · '+r.brand+'</div>'
-          +'<div class="pmeta">'+detail+'<br>'+timeInfo+' · 識別證 '+(r.badge||'-')+'<br>'+certHtml+'</div>'
-        +'</div>'
-        +'<span class="pbadge '+statusCls+'">'+statusTxt+'</span>'
-        +'</div>';
-    }).join('');
-  }
-  document.getElementById('people-modal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closePeopleModal(){
-  document.getElementById('people-modal').classList.remove('open');
-  document.body.style.overflow='';
-}
-function closeModal(e){
-  if(e.target===document.getElementById('people-modal')) closePeopleModal();
-}
-// ===== END MODAL =====
-
-function vendorSubmit(){
-  var baseReq=['f-date','f-time','f-company','f-brand','f-name','f-phone'];
-  for(var i=0;i<baseReq.length;i++){
-    if(!document.getElementById(baseReq[i]).value.trim()){
-      document.getElementById(baseReq[i]).focus();toast('請填寫所有必填欄位');return;
-    }
-  }
-  var cert=(document.querySelector('input[name=cert]:checked')||{}).value||'';
-  if(!cert){toast('請選擇是否取得證照');return;}
-  if(cert==='是'&&!document.getElementById('cert-card').value.trim()){
-    document.getElementById('cert-card').focus();toast('請輸入證照卡號');return;
-  }
-  var anyChk=false;
-  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){if(c.checked)anyChk=true;});
-  if(!anyChk){toast('請選擇交換證件');return;}
-  if(currentType==='surg'){
-    if(!document.getElementById('f-dept').value){toast('請選擇跟刀科別');return;}
-    if(!document.getElementById('f-doctor').value.trim()){toast('請選擇主刀醫師');return;}
-    if(!document.getElementById('f-surgery').value.trim()){toast('請選擇手術術式');return;}
-  } else {
-    if(!document.getElementById('f-maint-dept').value){toast('請選擇維修保養儀器哪一科');return;}
-  }
-  currentMode='nurse';
-  document.getElementById('vendor-mode').style.display='none';
-  document.getElementById('nurse-mode').style.display='block';
-  document.getElementById('mode-vendor').classList.remove('active');
-  document.getElementById('mode-nurse').classList.add('active');
-  var eb=document.getElementById('entry-submit-btn');
-  eb.disabled=false;eb.style.opacity='1';eb.style.cursor='pointer';
-  showPanel('entry');
-  toast('✅ 資料送出，請護理人員完成登記');
-}
-function checkVendorForm(){
-  var filled=true;
-  ['f-date','f-time','f-company','f-brand','f-name','f-phone'].forEach(function(id){
-    if(!document.getElementById(id).value.trim()) filled=false;
-  });
-  if(!document.querySelector('input[name=cert]:checked')) filled=false;
-  var certVal=(document.querySelector('input[name=cert]:checked')||{}).value;
-  if(certVal==='是' && !document.getElementById('cert-card').value.trim()) filled=false;
-  var anyChk=false;
-  document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){if(c.checked)anyChk=true;});
-  if(!anyChk) filled=false;
-  if(currentType==='surg'){
-    if(!document.getElementById('f-dept').value) filled=false;
-    if(!document.getElementById('f-doctor').value.trim()) filled=false;
-    if(!document.getElementById('f-surgery').value.trim()) filled=false;
-  } else {
-    if(!document.getElementById('f-maint-dept').value) filled=false;
-  }
-  var sb=document.getElementById('vendor-submit-btn');
-  sb.style.opacity=filled?'1':'.4';
-  sb.style.pointerEvents=filled?'auto':'none';
-}
 var records=[];
 var currentMode='vendor';
 var exitId=null;
 var currentType='surg';
 var today=new Date().toISOString().split('T')[0];
+
+/* ── 統計卡片名單浮層 ── */
+var statCfg={
+  total:{title:'📋 今日進場人員',bg:'#ede9fe',fg:'#7c3aed',cbg:'#7c3aed',cfg:'#fff'},
+  inside:{title:'🏥 目前在場人員',bg:'#fce7f3',fg:'#db2777',cbg:'#db2777',cfg:'#fff'},
+  pending:{title:'🔄 待換證人員',bg:'#d1fae5',fg:'#059669',cbg:'#059669',cfg:'#fff'},
+  left:{title:'🚪 已離場人員',bg:'#fef3c7',fg:'#d97706',cbg:'#d97706',cfg:'#fff'}
+};
+
+function openStatList(type){
+  var list=[];
+  if(type==='total') list=records.filter(function(r){return r.date===today;});
+  else if(type==='inside') list=records.filter(function(r){return r.status==='in';});
+  else if(type==='pending') list=records.filter(function(r){return r.status==='in';});
+  else if(type==='left') list=records.filter(function(r){return r.date===today&&r.status==='out';});
+
+  var c=statCfg[type];
+  document.getElementById('ls-title').textContent=c.title;
+  var cnt=document.getElementById('ls-count');
+  cnt.textContent=list.length+'人';
+  cnt.style.background=c.cbg;cnt.style.color=c.cfg;
+
+  var body=document.getElementById('ls-body');
+  if(!list.length){
+    body.innerHTML='<div class="ls-empty"><div class="ls-empty-i">👤</div>目前無人員資料</div>';
+  } else {
+    body.innerHTML=list.map(function(r){
+      var isMaint=r.entryType==='maint';
+      var detail=isMaint
+        ?'🔧 '+(r.maintDept||'')+(r.maintDevice?' · '+r.maintDevice:'')
+        :'🔪 '+(r.dept||'')+(r.doctor?' · '+r.doctor:'')+(r.surgery?' · '+r.surgery:'');
+      var t1=r.status==='in'
+        ?'<span class="lp-tag" style="background:#d1fae5;color:#059669">在場中</span>'
+        :'<span class="lp-tag" style="background:#f3f4f6;color:#6b7280">已離場</span>';
+      var t2=r.cert==='是'
+        ?'<span class="lp-tag" style="background:#ede9fe;color:#7c3aed">持證</span>'
+        :'<span class="lp-tag" style="background:#fee2e2;color:#dc2626">未持證</span>';
+      var overday=r.date&&r.date!==today
+        ?'<span style="font-size:10px;background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 6px;margin-left:4px">⚠️ '+r.date+'</span>':'';
+      return '<div class="lp">'+
+        '<div class="lp-av" style="background:'+c.bg+';color:'+c.fg+'">'+(r.name||'?').slice(0,1)+'</div>'+
+        '<div class="lp-info">'+
+          '<div class="lp-name">'+r.name+overday+'</div>'+
+          '<div class="lp-co">'+r.company+'（'+r.brand+'）</div>'+
+          '<div class="lp-det">'+detail+'<br>進場 '+r.date+' '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'　識別證：'+(r.badge||'-')+'</div>'+
+          '<div class="lp-tags">'+t1+t2+'</div>'+
+        '</div></div>';
+    }).join('');
+  }
+
+  document.querySelectorAll('.sc').forEach(function(el){el.classList.remove('active-card');});
+  var idx={total:0,inside:1,pending:2,left:3};
+  document.querySelectorAll('.sc')[idx[type]].classList.add('active-card');
+  document.getElementById('list-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeStatList(e,force){
+  if(force||!e||e.target===document.getElementById('list-overlay')){
+    document.getElementById('list-overlay').classList.remove('open');
+    document.body.style.overflow='';
+    document.querySelectorAll('.sc').forEach(function(el){el.classList.remove('active-card');});
+  }
+}
+
+/* ── 醫師與術式資料庫 ── */
+var DOCTORS={
+  '心臟外科':['陳○美','林○宏','黃○凱'],
+  '神經外科':['黃○天','王○智','劉○賢'],
+  '骨科':['吳○仁','張○明','蔡○福'],
+  '泌尿科':['蘇○明','鄭○德','李○昌'],
+  '婦產科':['劉○芸','陳○娟','林○蓉'],
+  '一般外科':['林○志','吳○輝','洪○昇'],
+  '胸腔外科':['許○峰','江○隆','葉○翔'],
+  '整形外科':['謝○欣','方○嘉','柯○婷'],
+  '耳鼻喉科':['李○清','游○弘','紀○誠'],
+  '眼科':['葉○瑩','莊○敏','周○豪'],
+  '其他':[]
+};
+var SURGERIES={
+  '心臟外科':['冠狀動脈繞道手術','瓣膜置換術','主動脈瘤修補','心室中膈缺損修補','心包膜切除術'],
+  '神經外科':['顱內腫瘤切除','腦動脈瘤夾閉','腰椎椎間盤切除','腦室腹腔引流','頸椎融合術'],
+  '骨科':['全膝關節置換','全髖關節置換','脊椎融合術','骨折復位固定','韌帶重建術'],
+  '泌尿科':['腎臟結石碎石術','前列腺刮除術','膀胱腫瘤電燒','腎臟切除術','輸尿管鏡檢查'],
+  '婦產科':['腹腔鏡子宮肌瘤切除','子宮全切除術','卵巢囊腫切除','剖腹產','輸卵管結紮'],
+  '一般外科':['腹腔鏡膽囊切除','闌尾切除術','疝氣修補術','結腸切除術','胃切除術'],
+  '胸腔外科':['肺葉切除術','胸腔鏡手術','食道切除術','氣胸修補術','縱膈腔腫瘤切除'],
+  '整形外科':['皮膚移植術','乳房重建術','顏面骨骨折復位','燒傷清創術','脂肪抽吸術'],
+  '耳鼻喉科':['扁桃腺切除術','鼻中膈矯正','喉部腫瘤切除','耳膜修補術','鼻竇手術'],
+  '眼科':['白內障手術','玻璃體切除術','青光眼手術','視網膜剝離修復','斜視矯正術'],
+  '其他':[]
+};
+
+function onDeptChange(){
+  var dept=document.getElementById('f-dept').value;
+  var dsel=document.getElementById('f-doctor');
+  var ssel=document.getElementById('f-surgery');
+  dsel.innerHTML='<option value="">請選擇醫師</option>';
+  ssel.innerHTML='<option value="">請先選主刀醫師</option>';
+  if(!dept||!DOCTORS[dept])return;
+  DOCTORS[dept].forEach(function(d){var o=document.createElement('option');o.value=d;o.textContent=d;dsel.appendChild(o);});
+}
+
+function onDoctorChange(){
+  var dept=document.getElementById('f-dept').value;
+  var ssel=document.getElementById('f-surgery');
+  ssel.innerHTML='<option value="">請選擇術式</option>';
+  if(!dept||!SURGERIES[dept])return;
+  SURGERIES[dept].forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;ssel.appendChild(o);});
+}
 
 function setType(t){
   currentType=t;
@@ -486,14 +507,6 @@ updateClock();setInterval(updateClock,1000);
 document.getElementById('f-date').value=today;
 document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
 document.getElementById('rpt-month').value=today.slice(0,7);
-['f-date','f-time','f-company','f-brand','f-name','f-phone','f-dept','f-doctor','f-surgery','f-maint-dept','f-maint-device','cert-card'].forEach(function(id){
-  var el=document.getElementById(id);
-  if(el) el.addEventListener('input',checkVendorForm);
-  if(el) el.addEventListener('change',checkVendorForm);
-});
-document.querySelectorAll('input[name=cert]').forEach(function(r){r.addEventListener('change',checkVendorForm);});
-document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){c.addEventListener('change',checkVendorForm);});
-checkVendorForm();
 
 db.collection('records').orderBy('createdAt','desc').onSnapshot(function(snapshot){
   records=snapshot.docs.map(function(d){return Object.assign({id:d.id},d.data());});
@@ -513,11 +526,6 @@ function switchMode(mode){
   document.getElementById('mode-vendor').classList.toggle('active',mode==='vendor');
   document.getElementById('mode-nurse').classList.toggle('active',mode==='nurse');
   if(mode==='nurse'){renderExitList();renderRecords();}
-  if(mode==='vendor'){
-    var eb=document.getElementById('entry-submit-btn');
-    eb.disabled=true;eb.style.opacity='.4';eb.style.cursor='not-allowed';
-    checkVendorForm();
-  }
 }
 
 function showPanel(name){
@@ -535,8 +543,8 @@ function showPanel(name){
 function updateStats(){
   var tr=records.filter(function(r){return r.date===today;});
   document.getElementById('s-total').textContent=tr.length;
-  document.getElementById('s-inside').textContent=records.filter(function(r){return r.status==='in';}).length;
-  document.getElementById('s-pending').textContent=records.filter(function(r){return r.status==='in';}).length;
+  document.getElementById('s-inside').textContent=tr.filter(function(r){return r.status==='in';}).length;
+  document.getElementById('s-pending').textContent=tr.filter(function(r){return r.status==='in';}).length;
   document.getElementById('s-left').textContent=tr.filter(function(r){return r.status==='out';}).length;
 }
 
@@ -629,8 +637,8 @@ function submitEntry(){
 function clearVendorForm(){
   ['f-company','f-brand','f-name','f-phone','cert-card','f-maint-device'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-dept').value='';
-  document.getElementById('f-doctor').value='';
-  document.getElementById('f-surgery').value='';
+  document.getElementById('f-doctor').innerHTML='<option value="">請先選科別</option>';
+  document.getElementById('f-surgery').innerHTML='<option value="">請先選主刀醫師</option>';
   document.getElementById('f-maint-dept').value='';
   document.querySelectorAll('input[name=cert]').forEach(function(r){r.checked=false;});
   document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){c.checked=false;});
@@ -643,10 +651,8 @@ function clearVendorForm(){
   document.getElementById('f-date').value=today;
   document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
   setType('surg');
-  checkVendorForm();
-  var eb=document.getElementById('entry-submit-btn');
-  eb.disabled=true;eb.style.opacity='.4';eb.style.cursor='not-allowed';
 }
+
 function clearNurseForm(){
   ['f-badge','f-recorder','f-note'].forEach(function(id){document.getElementById(id).value='';});
 }
@@ -661,9 +667,7 @@ function renderExitList(){
     var sub=isMaint
       ?'🔧 維修：'+(r.maintDept||'')+(r.maintDevice?' · '+r.maintDevice:'')
       :(r.dept||'')+' · '+(r.doctor||'')+' · '+(r.surgery||'');
-    var isOverday=r.date&&r.date!==today;
-    var overdayTag=isOverday?'<span class="overday-tag">⚠️ '+r.date+' 進場</span>':'';
-    return '<div class="exit-item"><div><div class="em">'+r.company+'（'+r.brand+'）· '+r.name+overdayTag+'</div><div class="es">'+sub+' · 進場 '+r.time+' · 識別證 '+(r.badge||'')+'</div></div><button class="ebtn" onclick="openExitForm(\''+r.id+'\')">離場<br>換證</button></div>';
+    return '<div class="exit-item"><div><div class="em">'+r.company+'（'+r.brand+'）· '+r.name+'</div><div class="es">'+sub+' · 進場 '+r.time+' · 識別證 '+(r.badge||'')+'</div></div><button class="ebtn" onclick="openExitForm(\''+r.id+'\')">離場<br>換證</button></div>';
   }).join('');
 }
 
@@ -673,7 +677,6 @@ function openExitForm(id){
   var label=isMaint
     ?r.company+'（'+r.brand+'）· '+r.name+' · 維修：'+(r.maintDept||'')
     :r.company+'（'+r.brand+'）· '+r.name+' · '+(r.dept||'');
-  if(r.date&&r.date!==today){label+='　⚠️ 進場日期：'+r.date;}
   document.getElementById('exit-form-person').textContent=label;
   document.getElementById('exit-time').value=new Date().toTimeString().slice(0,5);
   document.getElementById('exit-signer').value='';
@@ -742,15 +745,6 @@ function exportCSV(){
   ];});
   var csv='\uFEFF'+[h].concat(rows).map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
   var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='恩主公醫院手術室門禁管理_'+month+'.csv';a.click();toast('✅ CSV 匯出成功');
-}
-</script>
-<script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load',function(){
-    navigator.serviceWorker.register('/sw.js')
-      .then(function(r){console.log('SW registered');})
-      .catch(function(e){console.log('SW error',e);});
-  });
 }
 </script>
 </body>
