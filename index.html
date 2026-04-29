@@ -35,8 +35,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .tnav.t-exit.active{background:#db2777;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
 .tnav.t-records.active{background:#059669;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
 .tnav.t-report.active{background:#d97706;color:#fff;border-color:#fff;box-shadow:0 3px 12px rgba(0,0,0,.4);font-weight:700}
-
-/* ── 統計卡片（可點擊） ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 12px 0}
 .sc{border-radius:var(--rsm);padding:12px 6px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;user-select:none}
 .sc:active{transform:scale(.95)}
@@ -49,8 +47,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .sn1{color:var(--c1)}.sn2{color:var(--c2)}.sn3{color:var(--c3)}.sn4{color:var(--c4)}
 .sl{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.3}
 .sc-tap{font-size:9px;color:var(--text3);margin-top:3px}
-
-/* ── 底部滑出名單 ── */
 .list-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:flex-end}
 .list-overlay.open{display:flex;animation:lo-in .18s ease}
 @keyframes lo-in{from{opacity:0}to{opacity:1}}
@@ -73,7 +69,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .lp-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
 .ls-empty{text-align:center;padding:48px 20px;color:var(--text3);font-size:14px}
 .ls-empty-i{font-size:36px;margin-bottom:12px}
-
 .panel{display:none;padding:12px}.panel.active{display:block}
 .fc{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);border:.5px solid var(--border);overflow:hidden;margin-bottom:12px}
 .ch{padding:12px 16px;font-size:13px;font-weight:700;letter-spacing:.06em}
@@ -138,9 +133,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .type-btn.sel-surg{background:var(--c1);color:#fff}
 .type-btn.sel-maint{background:#7c3aed;color:#fff}
 .type-btn:first-child{border-right:2px solid #e5e7eb}
-.lock-group{background:#fdf8ff;border:1.5px solid #c4b5fd;border-radius:var(--rsm);padding:14px;margin-bottom:16px}
-.lock-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.lock-badge{background:#7c3aed;color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;white-space:nowrap}
+.surg-group{background:#fdf8ff;border:1.5px solid #c4b5fd;border-radius:var(--rsm);padding:14px;margin-bottom:16px}
+.surg-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .maint-group{background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:var(--rsm);padding:14px;margin-bottom:16px}
 .maint-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px}
 </style></head>
@@ -212,33 +206,20 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
 
       <div id="surg-block">
-        <div class="lock-group">
-          <div class="lock-group-hdr">
-            <span class="lock-badge">🔒 三欄連動</span>
-            跟刀科別 選定後，主刀醫師與術式自動對應
-          </div>
+        <div class="surg-group">
+          <div class="surg-group-hdr">🔪 跟刀手術資訊</div>
           <div class="fg" style="margin-bottom:14px">
             <label>跟刀科別<span class="req">*</span></label>
-            <select id="f-dept" onchange="onDeptChange()">
-              <option value="">選擇科別</option>
-              <option>心臟外科</option><option>神經外科</option><option>骨科</option>
-              <option>泌尿科</option><option>婦產科</option><option>一般外科</option>
-              <option>胸腔外科</option><option>整形外科</option><option>耳鼻喉科</option>
-              <option>眼科</option><option>其他</option>
-            </select>
+            <input type="text" id="f-dept" placeholder="請輸入科別">
           </div>
           <div class="fr2">
             <div class="fg" style="margin-bottom:0">
               <label>主刀醫師<span class="req">*</span></label>
-              <select id="f-doctor" onchange="onDoctorChange()">
-                <option value="">請先選科別</option>
-              </select>
+              <input type="text" id="f-doctor" placeholder="請輸入醫師姓名">
             </div>
             <div class="fg" style="margin-bottom:0">
               <label>手術術式<span class="req">*</span></label>
-              <select id="f-surgery">
-                <option value="">請先選主刀醫師</option>
-              </select>
+              <input type="text" id="f-surgery" placeholder="請輸入手術術式">
             </div>
           </div>
         </div>
@@ -351,7 +332,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 
-<!-- ── 人員名單浮層 ── -->
+<!-- 人員名單浮層 -->
 <div class="list-overlay" id="list-overlay" onclick="closeStatList(event)">
   <div class="list-sheet">
     <div class="ls-hdr">
@@ -398,13 +379,11 @@ function openStatList(type){
   else if(type==='inside') list=records.filter(function(r){return r.status==='in';});
   else if(type==='pending') list=records.filter(function(r){return r.status==='in';});
   else if(type==='left') list=records.filter(function(r){return r.date===today&&r.status==='out';});
-
   var c=statCfg[type];
   document.getElementById('ls-title').textContent=c.title;
   var cnt=document.getElementById('ls-count');
   cnt.textContent=list.length+'人';
   cnt.style.background=c.cbg;cnt.style.color=c.cfg;
-
   var body=document.getElementById('ls-body');
   if(!list.length){
     body.innerHTML='<div class="ls-empty"><div class="ls-empty-i">👤</div>目前無人員資料</div>';
@@ -432,7 +411,6 @@ function openStatList(type){
         '</div></div>';
     }).join('');
   }
-
   document.querySelectorAll('.sc').forEach(function(el){el.classList.remove('active-card');});
   var idx={total:0,inside:1,pending:2,left:3};
   document.querySelectorAll('.sc')[idx[type]].classList.add('active-card');
@@ -448,8 +426,12 @@ function closeStatList(e,force){
   }
 }
 
-/* ── 醫師與術式資料庫 ── */
-var DOCTORS={
+/* ══════════════════════════════════════════
+   醫師與術式資料庫
+   ── 醫師清單：所有科別醫師合併，可自由選擇
+   ── 術式清單：依選擇的科別顯示
+   ══════════════════════════════════════════ */
+var DOCTORS_BY_DEPT={
   '心臟外科':['陳○美','林○宏','黃○凱'],
   '神經外科':['黃○天','王○智','劉○賢'],
   '骨科':['吳○仁','張○明','蔡○福'],
@@ -462,6 +444,15 @@ var DOCTORS={
   '眼科':['葉○瑩','莊○敏','周○豪'],
   '其他':[]
 };
+
+/* 所有醫師合併（含科別標示），供自由選擇 */
+var ALL_DOCTORS=[];
+Object.keys(DOCTORS_BY_DEPT).forEach(function(dept){
+  DOCTORS_BY_DEPT[dept].forEach(function(doc){
+    ALL_DOCTORS.push({name:doc,dept:dept});
+  });
+});
+
 var SURGERIES={
   '心臟外科':['冠狀動脈繞道手術','瓣膜置換術','主動脈瘤修補','心室中膈缺損修補','心包膜切除術'],
   '神經外科':['顱內腫瘤切除','腦動脈瘤夾閉','腰椎椎間盤切除','腦室腹腔引流','頸椎融合術'],
@@ -476,23 +467,31 @@ var SURGERIES={
   '其他':[]
 };
 
-function onDeptChange(){
-  var dept=document.getElementById('f-dept').value;
+/* 科別、醫師、術式均為自由填寫，無需下拉邏輯 */
+function initDoctorSelect(){
   var dsel=document.getElementById('f-doctor');
-  var ssel=document.getElementById('f-surgery');
   dsel.innerHTML='<option value="">請選擇醫師</option>';
-  ssel.innerHTML='<option value="">請先選主刀醫師</option>';
-  if(!dept||!DOCTORS[dept])return;
-  DOCTORS[dept].forEach(function(d){var o=document.createElement('option');o.value=d;o.textContent=d;dsel.appendChild(o);});
+  ALL_DOCTORS.forEach(function(d){
+    var o=document.createElement('option');
+    o.value=d.name;
+    o.textContent=d.name+'（'+d.dept+'）';
+    dsel.appendChild(o);
+  });
 }
 
-function onDoctorChange(){
+/* 科別變更 → 更新術式清單，醫師清單不變 */
+function onDeptChange(){
   var dept=document.getElementById('f-dept').value;
   var ssel=document.getElementById('f-surgery');
   ssel.innerHTML='<option value="">請選擇術式</option>';
   if(!dept||!SURGERIES[dept])return;
-  SURGERIES[dept].forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;ssel.appendChild(o);});
+  SURGERIES[dept].forEach(function(s){
+    var o=document.createElement('option');o.value=s;o.textContent=s;ssel.appendChild(o);
+  });
 }
+
+/* 醫師變更（保留，不做術式重設） */
+function onDoctorChange(){}
 
 function setType(t){
   currentType=t;
@@ -507,6 +506,8 @@ updateClock();setInterval(updateClock,1000);
 document.getElementById('f-date').value=today;
 document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
 document.getElementById('rpt-month').value=today.slice(0,7);
+
+/* 頁面載入後初始化完成 */
 
 db.collection('records').orderBy('createdAt','desc').onSnapshot(function(snapshot){
   records=snapshot.docs.map(function(d){return Object.assign({id:d.id},d.data());});
@@ -637,8 +638,8 @@ function submitEntry(){
 function clearVendorForm(){
   ['f-company','f-brand','f-name','f-phone','cert-card','f-maint-device'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-dept').value='';
-  document.getElementById('f-doctor').innerHTML='<option value="">請先選科別</option>';
-  document.getElementById('f-surgery').innerHTML='<option value="">請先選主刀醫師</option>';
+  document.getElementById('f-doctor').value='';
+  document.getElementById('f-surgery').value='';
   document.getElementById('f-maint-dept').value='';
   document.querySelectorAll('input[name=cert]').forEach(function(r){r.checked=false;});
   document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){c.checked=false;});
