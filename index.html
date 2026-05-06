@@ -231,15 +231,11 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           <div class="fr2">
             <div class="fg" style="margin-bottom:0">
               <label>主刀醫師<span class="req">*</span></label>
-              <select id="f-doctor" onchange="onDoctorChange()">
-                <option value="">請先選科別</option>
-              </select>
+              <input type="text" id="f-doctor" placeholder="請輸入醫師姓名">
             </div>
             <div class="fg" style="margin-bottom:0">
               <label>手術術式<span class="req">*</span></label>
-              <select id="f-surgery">
-                <option value="">請先選主刀醫師</option>
-              </select>
+              <input type="text" id="f-surgery" placeholder="請輸入手術術式">
             </div>
           </div>
         </div>
@@ -477,23 +473,7 @@ var SURGERIES={
   '其他':[]
 };
 
-function onDeptChange(){
-  var dept=document.getElementById('f-dept').value;
-  var dsel=document.getElementById('f-doctor');
-  var ssel=document.getElementById('f-surgery');
-  dsel.innerHTML='<option value="">請選擇醫師</option>';
-  ssel.innerHTML='<option value="">請先選主刀醫師</option>';
-  if(!dept||!DOCTORS[dept])return;
-  DOCTORS[dept].forEach(function(d){var o=document.createElement('option');o.value=d;o.textContent=d;dsel.appendChild(o);});
-}
-
-function onDoctorChange(){
-  var dept=document.getElementById('f-dept').value;
-  var ssel=document.getElementById('f-surgery');
-  ssel.innerHTML='<option value="">請選擇術式</option>';
-  if(!dept||!SURGERIES[dept])return;
-  SURGERIES[dept].forEach(function(s){var o=document.createElement('option');o.value=s;o.textContent=s;ssel.appendChild(o);});
-}
+function onDeptChange(){}
 
 function setType(t){
   currentType=t;
@@ -638,8 +618,8 @@ function submitEntry(){
 function clearVendorForm(){
   ['f-company','f-brand','f-name','f-phone','cert-card','f-maint-device'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-dept').value='';
-  document.getElementById('f-doctor').innerHTML='<option value="">請先選科別</option>';
-  document.getElementById('f-surgery').innerHTML='<option value="">請先選主刀醫師</option>';
+  document.getElementById('f-doctor').value='';
+  document.getElementById('f-surgery').value='';
   document.getElementById('f-maint-dept').value='';
   document.querySelectorAll('input[name=cert]').forEach(function(r){r.checked=false;});
   document.querySelectorAll('#id-checks input[type=checkbox]').forEach(function(c){c.checked=false;});
