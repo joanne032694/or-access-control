@@ -104,7 +104,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .exit-item:last-child{border-bottom:none}
 .em{font-size:16px;font-weight:600;color:var(--text)}.es{font-size:13px;color:var(--text2);margin-top:4px}
 .ebtn{background:var(--c2);color:white;border:none;border-radius:var(--rsm);padding:10px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;line-height:1.4;text-align:center}
-.ri{padding:14px 16px;border-bottom:.5px solid #f3f4f6}.ri:last-child{border-bottom:none}
+.ri{padding:14px 16px;border-bottom:.5px solid #f3f4f6;position:relative}.ri:last-child{border-bottom:none}
 .rt{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .rn{font-size:15px;font-weight:600}.rm{font-size:13px;color:var(--text2);line-height:1.8}
 .badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600}
@@ -137,6 +137,20 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .surg-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .maint-group{background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:var(--rsm);padding:14px;margin-bottom:16px}
 .maint-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px}
+
+/* 編輯按鈕 */
+.edit-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-size:12px;font-weight:600;background:#ede9fe;color:#7c3aed;border:none;border-radius:8px;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .15s}
+.edit-btn:active{background:#ddd6fe}
+
+/* 編輯 Modal */
+.edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:flex-end}
+.edit-overlay.open{display:flex;animation:lo-in .18s ease}
+.edit-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-height:90vh;display:flex;flex-direction:column;animation:ls-up .22s cubic-bezier(.32,1,.6,1)}
+.edit-hdr{padding:16px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f3f4f6;flex-shrink:0;background:#ede9fe}
+.edit-hdr-title{font-size:16px;font-weight:700;color:#7c3aed}
+.edit-body{overflow-y:auto;flex:1;padding:16px}
+.edit-footer{padding:12px 16px;border-top:1px solid #f3f4f6;display:flex;gap:10px;flex-shrink:0}
+.edit-warn{background:#fef3c7;border-left:3px solid #d97706;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#92400e;margin-bottom:16px}
 </style></head>
 <body>
 <div class="app-header">
@@ -332,6 +346,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 
+<!-- 統計人員清單 overlay -->
 <div class="list-overlay" id="list-overlay" onclick="closeStatList(event)">
   <div class="list-sheet">
     <div class="ls-hdr">
@@ -342,6 +357,51 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
     </div>
     <div class="ls-body" id="ls-body"></div>
+  </div>
+</div>
+
+<!-- ✏️ 編輯紀錄 Modal -->
+<div class="edit-overlay" id="edit-overlay" onclick="closeEditModal(event)">
+  <div class="edit-sheet">
+    <div class="edit-hdr">
+      <div class="edit-hdr-title">✏️ 修改進場資料</div>
+      <button class="ls-close" onclick="closeEditModal(null,true)">✕</button>
+    </div>
+    <div class="edit-body">
+      <div class="edit-warn">⚠️ 護理人員專用：請謹慎修改，所有變更會立即同步雲端。</div>
+      <div class="fr2">
+        <div class="fg"><label>進場日期<span class="req">*</span></label><input type="date" id="edit-date"></div>
+        <div class="fg"><label>進場時間<span class="req">*</span></label><input type="time" id="edit-time"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>公司名稱</label><input type="text" id="edit-company" placeholder="公司全名"></div>
+        <div class="fg"><label>廠牌</label><input type="text" id="edit-brand" placeholder="產品廠牌"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>姓名</label><input type="text" id="edit-name" placeholder="姓名"></div>
+        <div class="fg"><label>聯絡電話</label><input type="tel" id="edit-phone" placeholder="電話號碼"></div>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>識別證號</label><input type="text" id="edit-badge" placeholder="識別證號碼"></div>
+        <div class="fg"><label>進場簽名</label><input type="text" id="edit-recorder" placeholder="簽名"></div>
+      </div>
+      <div id="edit-surg-block">
+        <div class="fr2">
+          <div class="fg"><label>跟刀科別</label><input type="text" id="edit-dept" placeholder="科別"></div>
+          <div class="fg"><label>主刀醫師</label><input type="text" id="edit-doctor" placeholder="醫師姓名"></div>
+        </div>
+        <div class="fg"><label>手術術式</label><input type="text" id="edit-surgery" placeholder="手術術式"></div>
+      </div>
+      <div id="edit-maint-block" style="display:none">
+        <div class="fg"><label>維修保養科別</label><input type="text" id="edit-maint-dept" placeholder="科別"></div>
+        <div class="fg"><label>儀器名稱／型號</label><input type="text" id="edit-maint-device" placeholder="儀器名稱"></div>
+      </div>
+      <div class="fg"><label>備註</label><textarea id="edit-note" placeholder="備註事項..."></textarea></div>
+    </div>
+    <div class="edit-footer">
+      <button class="btn bg" onclick="closeEditModal(null,true)">取消</button>
+      <button class="btn bp" onclick="saveEdit()">💾 儲存修改</button>
+    </div>
   </div>
 </div>
 
@@ -361,6 +421,7 @@ db=firebase.firestore();
 var records=[];
 var currentMode='vendor';
 var exitId=null;
+var editId=null;
 var currentType='surg';
 var today=new Date().toISOString().split('T')[0];
 
@@ -424,6 +485,79 @@ function closeStatList(e,force){
   }
 }
 
+// ===== 編輯功能 =====
+function openEditModal(id){
+  editId=id;
+  var r=records.find(function(x){return x.id===id;});
+  if(!r)return;
+  document.getElementById('edit-date').value=r.date||'';
+  document.getElementById('edit-time').value=r.time||'';
+  document.getElementById('edit-company').value=r.company||'';
+  document.getElementById('edit-brand').value=r.brand||'';
+  document.getElementById('edit-name').value=r.name||'';
+  document.getElementById('edit-phone').value=r.phone||'';
+  document.getElementById('edit-badge').value=r.badge||'';
+  document.getElementById('edit-recorder').value=r.recorder||'';
+  document.getElementById('edit-note').value=r.note||'';
+  var isMaint=r.entryType==='maint';
+  document.getElementById('edit-surg-block').style.display=isMaint?'none':'block';
+  document.getElementById('edit-maint-block').style.display=isMaint?'block':'none';
+  if(isMaint){
+    document.getElementById('edit-maint-dept').value=r.maintDept||'';
+    document.getElementById('edit-maint-device').value=r.maintDevice||'';
+  } else {
+    document.getElementById('edit-dept').value=r.dept||'';
+    document.getElementById('edit-doctor').value=r.doctor||'';
+    document.getElementById('edit-surgery').value=r.surgery||'';
+  }
+  document.getElementById('edit-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeEditModal(e,force){
+  if(force||!e||e.target===document.getElementById('edit-overlay')){
+    document.getElementById('edit-overlay').classList.remove('open');
+    document.body.style.overflow='';
+    editId=null;
+  }
+}
+
+function saveEdit(){
+  if(!editId)return;
+  var d=document.getElementById('edit-date').value;
+  var t=document.getElementById('edit-time').value;
+  if(!d){toast('請填寫進場日期');return;}
+  if(!t){toast('請填寫進場時間');return;}
+  var r=records.find(function(x){return x.id===editId;});
+  var isMaint=r&&r.entryType==='maint';
+  var upd={
+    date:d,time:t,
+    company:document.getElementById('edit-company').value.trim(),
+    brand:document.getElementById('edit-brand').value.trim(),
+    name:document.getElementById('edit-name').value.trim(),
+    phone:document.getElementById('edit-phone').value.trim(),
+    badge:document.getElementById('edit-badge').value.trim(),
+    recorder:document.getElementById('edit-recorder').value.trim(),
+    note:document.getElementById('edit-note').value.trim()
+  };
+  if(isMaint){
+    upd.maintDept=document.getElementById('edit-maint-dept').value.trim();
+    upd.maintDevice=document.getElementById('edit-maint-device').value.trim();
+  } else {
+    upd.dept=document.getElementById('edit-dept').value.trim();
+    upd.doctor=document.getElementById('edit-doctor').value.trim();
+    upd.surgery=document.getElementById('edit-surgery').value.trim();
+  }
+  db.collection('records').doc(editId).update(upd)
+    .then(function(){
+      toast('✅ 資料修改完成');
+      closeEditModal(null,true);
+      renderRecords();
+    })
+    .catch(function(){toast('❌ 修改失敗，請重試');});
+}
+// ===== 編輯功能結束 =====
+
 function setType(t){
   currentType=t;
   document.getElementById('type-surg').className='type-btn'+(t==='surg'?' sel-surg':'');
@@ -472,9 +606,11 @@ function showPanel(name){
 
 function updateStats(){
   var tr=records.filter(function(r){return r.date===today;});
+  // 目前在場：不限今日，只要 status==='in' 就算
+  var insideAll=records.filter(function(r){return r.status==='in';});
   document.getElementById('s-total').textContent=tr.length;
-  document.getElementById('s-inside').textContent=tr.filter(function(r){return r.status==='in';}).length;
-  document.getElementById('s-pending').textContent=tr.filter(function(r){return r.status==='in';}).length;
+  document.getElementById('s-inside').textContent=insideAll.length;
+  document.getElementById('s-pending').textContent=insideAll.length;
   document.getElementById('s-left').textContent=tr.filter(function(r){return r.status==='out';}).length;
 }
 
@@ -597,7 +733,8 @@ function renderExitList(){
     var sub=isMaint
       ?'🔧 維修：'+(r.maintDept||'')+(r.maintDevice?' · '+r.maintDevice:'')
       :(r.dept||'')+' · '+(r.doctor||'')+' · '+(r.surgery||'');
-    return '<div class="exit-item"><div><div class="em">'+r.company+'（'+r.brand+'）· '+r.name+'</div><div class="es">'+sub+' · 進場 '+r.time+' · 識別證 '+(r.badge||'')+'</div></div><button class="ebtn" onclick="openExitForm(\''+r.id+'\')">離場<br>換證</button></div>';
+    var overday=r.date&&r.date!==today?' <span style="font-size:11px;background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 6px">⚠️ '+r.date+'</span>':'';
+    return '<div class="exit-item"><div style="flex:1;min-width:0"><div class="em">'+r.company+'（'+r.brand+'）· '+r.name+overday+'</div><div class="es">'+sub+' · 進場 '+r.time+' · 識別證 '+(r.badge||'')+'</div></div><button class="ebtn" onclick="openExitForm(\''+r.id+'\')">離場<br>換證</button></div>';
   }).join('');
 }
 
@@ -633,7 +770,16 @@ function fmtRecord(r){
   var detail=isMaint
     ?'維修科別：'+(r.maintDept||'')+(r.maintDevice?' ／ 儀器：'+r.maintDevice:'')
     :(r.dept||'')+' ／ '+(r.doctor||'')+' ／ '+(r.surgery||'');
-  return '<div class="ri"><div class="rt"><div class="rn">'+r.company+'・'+r.name+'</div><div style="display:flex;gap:6px;align-items:center">'+typeTag+'<span class="badge '+(r.status==='in'?'bin':'bout')+'">'+(r.status==='in'?'在場中':'已離場')+'</span></div></div><div class="rm">'+r.brand+' ／ '+detail+'<br>進場 '+r.date+' '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'<br>識別證：'+(r.badge||'')+'　<span class="badge '+(r.retBadge==='是'?'bry':'brn')+'">'+(r.retBadge?'歸還：'+r.retBadge:'未離場')+'</span><br>交換：'+r.idDoc+'<br><span class="badge '+(r.cert==='是'?'bcy':'bcn')+'">'+(r.cert==='是'?'持證 #'+r.certCard:'未持證')+'</span><br>進場簽名：'+(r.recorder||'')+(r.exitSigner?' ／ 離場簽名：'+r.exitSigner:'')+(r.note?' ／ 備註：'+r.note:'')+'</div></div>';
+  var overday=r.date&&r.date!==today
+    ?'<span style="font-size:10px;background:#fef3c7;color:#92400e;border-radius:4px;padding:1px 6px;margin-left:4px">⚠️ '+r.date+'</span>':'';
+  return '<div class="ri">'+
+    '<div class="rt">'+
+      '<div class="rn">'+r.company+'・'+r.name+overday+'</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+typeTag+'<span class="badge '+(r.status==='in'?'bin':'bout')+'">'+(r.status==='in'?'在場中':'已離場')+'</span></div>'+
+    '</div>'+
+    '<div class="rm">'+r.brand+' ／ '+detail+'<br>進場 '+r.date+' '+r.time+(r.exitTime?' ／ 離場 '+r.exitTime:'')+'<br>識別證：'+(r.badge||'')+'　<span class="badge '+(r.retBadge==='是'?'bry':'brn')+'">'+(r.retBadge?'歸還：'+r.retBadge:'未離場')+'</span><br>交換：'+r.idDoc+'<br><span class="badge '+(r.cert==='是'?'bcy':'bcn')+'">'+(r.cert==='是'?'持證 #'+r.certCard:'未持證')+'</span><br>進場簽名：'+(r.recorder||'')+(r.exitSigner?' ／ 離場簽名：'+r.exitSigner:'')+(r.note?' ／ 備註：'+r.note:'')+'</div>'+
+    '<button class="edit-btn" onclick="openEditModal(\''+r.id+'\')">✏️ 修改資料</button>'+
+  '</div>';
 }
 
 function renderRecords(){
