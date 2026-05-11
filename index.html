@@ -423,7 +423,7 @@ var currentMode='vendor';
 var exitId=null;
 var editId=null;
 var currentType='surg';
-var today=new Date().toISOString().split('T')[0];
+var today=new Date(new Date().getTime()+8*60*60*1000).toISOString().split('T')[0];
 
 var statCfg={
   total:{title:'📋 今日進場人員',bg:'#ede9fe',fg:'#7c3aed',cbg:'#7c3aed',cfg:'#fff'},
