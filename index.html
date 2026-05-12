@@ -397,6 +397,19 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
         <div class="fg"><label>儀器名稱／型號</label><input type="text" id="edit-maint-device" placeholder="儀器名稱"></div>
       </div>
       <div class="fg"><label>備註</label><textarea id="edit-note" placeholder="備註事項..."></textarea></div>
+
+      <div style="background:#fce7f3;border-left:3px solid #db2777;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#9d174d;margin-bottom:16px">🚪 離場資料（若已離場可修改）</div>
+      <div class="fr2">
+        <div class="fg"><label>離場時間</label><input type="time" id="edit-exit-time"></div>
+        <div class="fg"><label>離場簽名</label><input type="text" id="edit-exit-signer" placeholder="離場簽名"></div>
+      </div>
+      <div class="fg"><label>是否歸還識別證</label>
+        <div class="ret-row">
+          <label class="ropt" id="edit-ropt-yes" onclick="selEditRet('yes')"><input type="radio" name="edit-ret-badge" value="是"> ✅ 是，已歸還</label>
+          <label class="ropt" id="edit-ropt-no" onclick="selEditRet('no')"><input type="radio" name="edit-ret-badge" value="否"> ❌ 否，未歸還</label>
+          <label class="ropt" id="edit-ropt-none" onclick="selEditRet('none')"><input type="radio" name="edit-ret-badge" value=""> 　尚未離場</label>
+        </div>
+      </div>
     </div>
     <div class="edit-footer">
       <button class="btn bg" onclick="closeEditModal(null,true)">取消</button>
@@ -423,7 +436,7 @@ var currentMode='vendor';
 var exitId=null;
 var editId=null;
 var currentType='surg';
-var today=new Date(new Date().getTime()+8*60*60*1000).toISOString().split('T')[0];
+var today=new Date().toISOString().split('T')[0];
 
 var statCfg={
   total:{title:'📋 今日進場人員',bg:'#ede9fe',fg:'#7c3aed',cbg:'#7c3aed',cfg:'#fff'},
@@ -510,8 +523,27 @@ function openEditModal(id){
     document.getElementById('edit-doctor').value=r.doctor||'';
     document.getElementById('edit-surgery').value=r.surgery||'';
   }
+  // 離場資料
+  document.getElementById('edit-exit-time').value=r.exitTime||'';
+  document.getElementById('edit-exit-signer').value=r.exitSigner||'';
+  document.getElementById('edit-ropt-yes').className='ropt';
+  document.getElementById('edit-ropt-no').className='ropt';
+  document.getElementById('edit-ropt-none').className='ropt';
+  document.querySelectorAll('input[name=edit-ret-badge]').forEach(function(x){x.checked=false;});
+  if(r.retBadge==='是')selEditRet('yes');
+  else if(r.retBadge==='否')selEditRet('no');
+  else selEditRet('none');
+
   document.getElementById('edit-overlay').classList.add('open');
   document.body.style.overflow='hidden';
+}
+
+function selEditRet(which){
+  document.getElementById('edit-ropt-yes').className='ropt'+(which==='yes'?' sel-yes':'');
+  document.getElementById('edit-ropt-no').className='ropt'+(which==='no'?' sel-no':'');
+  document.getElementById('edit-ropt-none').className='ropt'+(which==='none'?' sel-yes':'');
+  var val=which==='yes'?'是':which==='no'?'否':'';
+  document.querySelectorAll('input[name=edit-ret-badge]').forEach(function(x){x.checked=(x.value===val);});
 }
 
 function closeEditModal(e,force){
@@ -538,7 +570,10 @@ function saveEdit(){
     phone:document.getElementById('edit-phone').value.trim(),
     badge:document.getElementById('edit-badge').value.trim(),
     recorder:document.getElementById('edit-recorder').value.trim(),
-    note:document.getElementById('edit-note').value.trim()
+    note:document.getElementById('edit-note').value.trim(),
+    exitTime:document.getElementById('edit-exit-time').value||'',
+    exitSigner:document.getElementById('edit-exit-signer').value.trim(),
+    retBadge:(document.querySelector('input[name=edit-ret-badge]:checked')||{}).value||''
   };
   if(isMaint){
     upd.maintDept=document.getElementById('edit-maint-dept').value.trim();
@@ -548,6 +583,8 @@ function saveEdit(){
     upd.doctor=document.getElementById('edit-doctor').value.trim();
     upd.surgery=document.getElementById('edit-surgery').value.trim();
   }
+  // 若有填離場時間則自動設為已離場，否則設回在場中
+  if(upd.exitTime){upd.status='out';}else{upd.status='in';upd.retBadge='';}
   db.collection('records').doc(editId).update(upd)
     .then(function(){
       toast('✅ 資料修改完成');
