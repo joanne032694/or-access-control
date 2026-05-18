@@ -138,6 +138,34 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .maint-group{background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:var(--rsm);padding:14px;margin-bottom:16px}
 .maint-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px}
 
+/* ── 廠商「完成填寫」大按鈕 ── */
+.vendor-done-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:18px 16px;
+  background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);
+  color:#fff;font-size:18px;font-weight:700;font-family:inherit;
+  border:none;border-radius:var(--rsm);cursor:pointer;
+  box-shadow:0 4px 16px rgba(124,58,237,.4);
+  transition:all .18s;letter-spacing:.02em;
+  margin-top:4px;
+}
+.vendor-done-btn:active{transform:scale(.97);box-shadow:0 2px 8px rgba(124,58,237,.3)}
+.vendor-done-btn .arrow{font-size:22px;transition:transform .18s}
+.vendor-done-btn:active .arrow{transform:translateX(4px)}
+
+/* ── 護理人員「確認進場登記（存檔）」按鈕 ── */
+.save-btn{
+  flex:1;padding:15px;
+  background:linear-gradient(135deg,#059669 0%,#0284c7 100%);
+  color:white;font-size:16px;font-weight:700;font-family:inherit;
+  border:none;border-radius:var(--rsm);cursor:pointer;
+  box-shadow:0 3px 12px rgba(5,150,105,.35);
+  transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.save-btn:active{transform:scale(.97)}
+.save-label-main{font-size:16px}
+.save-label-sub{font-size:12px;opacity:.85;font-weight:600;background:rgba(255,255,255,.2);border-radius:6px;padding:2px 8px}
+
 /* 編輯按鈕 */
 .edit-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-size:12px;font-weight:600;background:#ede9fe;color:#7c3aed;border:none;border-radius:8px;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .15s}
 .edit-btn:active{background:#ddd6fe}
@@ -173,7 +201,7 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 <div id="vendor-mode">
   <div style="padding:12px">
     <div class="fc"><div class="ch chp">📅 進場資訊</div><div class="cb">
-      <div class="notice">廠商請填寫以下資料，填完後手機交給護理人員確認。</div>
+      <div class="notice">廠商請填寫以下資料，填完後點下方按鈕交給護理人員確認。</div>
       <div class="fr2">
         <div class="fg"><label>進場日期<span class="req">*</span></label><input type="date" id="f-date"></div>
         <div class="fg"><label>進場時間<span class="req">*</span></label><input type="time" id="f-time"></div>
@@ -259,9 +287,10 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
         </div>
       </div>
 
-      <div style="background:#d97706;border-radius:10px;padding:16px 14px;font-size:16px;color:#fff;margin-top:8px;text-align:center;font-weight:700;letter-spacing:.02em">
-        填完後請交給護理人員繼續操作 👇
-      </div>
+      <!-- ✅ 廠商完成填寫按鈕 -->
+      <button class="vendor-done-btn" onclick="vendorDone()">
+        填寫完成，交給護理人員 <span class="arrow">→</span>
+      </button>
     </div></div>
   </div>
 </div>
@@ -304,8 +333,12 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
       <div class="btn-row">
-        <button class="btn bg" onclick="clearNurseForm()">清除</button>
-        <button class="btn bp" onclick="submitEntry()">✅ 確認進場登記</button>
+        <button class="btn bg" style="flex:none;padding:15px 20px" onclick="clearNurseForm()">清除</button>
+        <!-- ✅ 存檔按鈕 -->
+        <button class="save-btn" onclick="submitEntry()">
+          <span class="save-label-main">✅ 確認進場登記</span>
+          <span class="save-label-sub">存檔</span>
+        </button>
       </div>
     </div></div>
   </div>
@@ -397,7 +430,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
         <div class="fg"><label>儀器名稱／型號</label><input type="text" id="edit-maint-device" placeholder="儀器名稱"></div>
       </div>
       <div class="fg"><label>備註</label><textarea id="edit-note" placeholder="備註事項..."></textarea></div>
-
       <div style="background:#fce7f3;border-left:3px solid #db2777;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:#9d174d;margin-bottom:16px">🚪 離場資料（若已離場可修改）</div>
       <div class="fr2">
         <div class="fg"><label>離場時間</label><input type="time" id="edit-exit-time"></div>
@@ -444,6 +476,34 @@ var statCfg={
   pending:{title:'🔄 待換證人員',bg:'#d1fae5',fg:'#059669',cbg:'#059669',cfg:'#fff'},
   left:{title:'🚪 已離場人員',bg:'#fef3c7',fg:'#d97706',cbg:'#d97706',cfg:'#fff'}
 };
+
+// ── 廠商按「填寫完成，交給護理人員」── 
+function vendorDone(){
+  // 驗證廠商必填欄位（不含識別證號/護理簽名，那是護理人員的）
+  var req=['f-date','f-time','f-company','f-brand','f-name','f-phone'];
+  for(var i=0;i<req.length;i++){
+    if(!document.getElementById(req[i]).value.trim()){
+      document.getElementById(req[i]).focus();
+      toast('請填寫所有必填欄位');return;
+    }
+  }
+  var cert=(document.querySelector('input[name=cert]:checked')||{}).value||'';
+  if(!cert){toast('請選擇是否取得證照');return;}
+  if(cert==='是'&&!document.getElementById('cert-card').value.trim()){
+    document.getElementById('cert-card').focus();toast('請輸入證照卡號');return;
+  }
+  if(!getIdChecked()){toast('請選擇交換證件');return;}
+  if(currentType==='surg'){
+    if(!document.getElementById('f-dept').value){toast('請填寫跟刀科別');return;}
+    if(!document.getElementById('f-doctor').value){toast('請填寫主刀醫師');return;}
+    if(!document.getElementById('f-surgery').value){toast('請填寫手術術式');return;}
+  } else {
+    if(!document.getElementById('f-maint-dept').value){toast('請選擇維修保養儀器哪一科');return;}
+  }
+  // 驗證通過 → 切換到護理人員模式
+  switchModeDirectly('nurse');
+  toast('✅ 廠商資料填寫完成，請護理人員繼續操作');
+}
 
 function openStatList(type){
   var list=[];
@@ -523,7 +583,6 @@ function openEditModal(id){
     document.getElementById('edit-doctor').value=r.doctor||'';
     document.getElementById('edit-surgery').value=r.surgery||'';
   }
-  // 離場資料
   document.getElementById('edit-exit-time').value=r.exitTime||'';
   document.getElementById('edit-exit-signer').value=r.exitSigner||'';
   document.getElementById('edit-ropt-yes').className='ropt';
@@ -533,7 +592,6 @@ function openEditModal(id){
   if(r.retBadge==='是')selEditRet('yes');
   else if(r.retBadge==='否')selEditRet('no');
   else selEditRet('none');
-
   document.getElementById('edit-overlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -583,7 +641,6 @@ function saveEdit(){
     upd.doctor=document.getElementById('edit-doctor').value.trim();
     upd.surgery=document.getElementById('edit-surgery').value.trim();
   }
-  // 若有填離場時間則自動設為已離場，否則設回在場中
   if(upd.exitTime){upd.status='out';}else{upd.status='in';upd.retBadge='';}
   db.collection('records').doc(editId).update(upd)
     .then(function(){
@@ -615,18 +672,24 @@ db.collection('records').orderBy('createdAt','desc').onSnapshot(function(snapsho
   if(currentMode==='nurse'){renderExitList();renderRecords();}
 });
 
+// 直接切換模式（不需要密碼，供 vendorDone 使用）
+function switchModeDirectly(mode){
+  currentMode=mode;
+  document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
+  document.getElementById('nurse-mode').style.display=mode==='nurse'?'block':'none';
+  document.getElementById('mode-vendor').classList.toggle('active',mode==='vendor');
+  document.getElementById('mode-nurse').classList.toggle('active',mode==='nurse');
+  if(mode==='nurse'){renderExitList();renderRecords();showPanel('entry');}
+  window.scrollTo(0,0);
+}
+
 function switchMode(mode){
   if(mode==='nurse'){
     var pwd=prompt('請輸入護理人員密碼：');
     if(pwd===null)return;
     if(pwd!=='A030'){alert('❌ 密碼錯誤，無法進入護理人員模式');return;}
   }
-  currentMode=mode;
-  document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
-  document.getElementById('nurse-mode').style.display=mode==='nurse'?'block':'none';
-  document.getElementById('mode-vendor').classList.toggle('active',mode==='vendor');
-  document.getElementById('mode-nurse').classList.toggle('active',mode==='nurse');
-  if(mode==='nurse'){renderExitList();renderRecords();}
+  switchModeDirectly(mode);
 }
 
 function showPanel(name){
@@ -643,7 +706,6 @@ function showPanel(name){
 
 function updateStats(){
   var tr=records.filter(function(r){return r.date===today;});
-  // 目前在場：不限今日，只要 status==='in' 就算
   var insideAll=records.filter(function(r){return r.status==='in';});
   document.getElementById('s-total').textContent=tr.length;
   document.getElementById('s-inside').textContent=insideAll.length;
@@ -733,7 +795,13 @@ function submitEntry(){
     status:'in',createdAt:Date.now()
   };
   db.collection('records').add(data)
-    .then(function(){toast('✅ 進場登記完成（已同步雲端）');clearVendorForm();clearNurseForm();})
+    .then(function(){
+      toast('✅ 進場登記存檔完成（已同步雲端）');
+      clearVendorForm();
+      clearNurseForm();
+      // 存檔後切回廠商模式，等待下一位
+      switchModeDirectly('vendor');
+    })
     .catch(function(){toast('❌ 儲存失敗，請重試');});
 }
 
