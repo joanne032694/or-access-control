@@ -137,40 +137,16 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .surg-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .maint-group{background:#fdf4ff;border:1.5px solid #e9d5ff;border-radius:var(--rsm);padding:14px;margin-bottom:16px}
 .maint-group-hdr{font-size:12px;font-weight:700;color:#7c3aed;letter-spacing:.05em;margin-bottom:12px}
-
-/* ── 廠商「完成填寫」大按鈕 ── */
-.vendor-done-btn{
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  width:100%;padding:18px 16px;
-  background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);
-  color:#fff;font-size:18px;font-weight:700;font-family:inherit;
-  border:none;border-radius:var(--rsm);cursor:pointer;
-  box-shadow:0 4px 16px rgba(124,58,237,.4);
-  transition:all .18s;letter-spacing:.02em;
-  margin-top:4px;
-}
+.vendor-done-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px 16px;background:linear-gradient(135deg,#7c3aed 0%,#db2777 100%);color:#fff;font-size:18px;font-weight:700;font-family:inherit;border:none;border-radius:var(--rsm);cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,.4);transition:all .18s;letter-spacing:.02em;margin-top:4px}
 .vendor-done-btn:active{transform:scale(.97);box-shadow:0 2px 8px rgba(124,58,237,.3)}
 .vendor-done-btn .arrow{font-size:22px;transition:transform .18s}
 .vendor-done-btn:active .arrow{transform:translateX(4px)}
-
-/* ── 護理人員「確認進場登記（存檔）」按鈕 ── */
-.save-btn{
-  flex:1;padding:15px;
-  background:linear-gradient(135deg,#059669 0%,#0284c7 100%);
-  color:white;font-size:16px;font-weight:700;font-family:inherit;
-  border:none;border-radius:var(--rsm);cursor:pointer;
-  box-shadow:0 3px 12px rgba(5,150,105,.35);
-  transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;
-}
+.save-btn{flex:1;padding:15px;background:linear-gradient(135deg,#059669 0%,#0284c7 100%);color:white;font-size:16px;font-weight:700;font-family:inherit;border:none;border-radius:var(--rsm);cursor:pointer;box-shadow:0 3px 12px rgba(5,150,105,.35);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px}
 .save-btn:active{transform:scale(.97)}
 .save-label-main{font-size:16px}
 .save-label-sub{font-size:12px;opacity:.85;font-weight:600;background:rgba(255,255,255,.2);border-radius:6px;padding:2px 8px}
-
-/* 編輯按鈕 */
 .edit-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;font-size:12px;font-weight:600;background:#ede9fe;color:#7c3aed;border:none;border-radius:8px;cursor:pointer;font-family:inherit;margin-top:8px;transition:all .15s}
 .edit-btn:active{background:#ddd6fe}
-
-/* 編輯 Modal */
 .edit-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:flex-end}
 .edit-overlay.open{display:flex;animation:lo-in .18s ease}
 .edit-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-height:90vh;display:flex;flex-direction:column;animation:ls-up .22s cubic-bezier(.32,1,.6,1)}
@@ -238,7 +214,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
         </div>
         <input type="text" class="oinp" id="other-text" placeholder="請說明其他證件" style="display:none">
       </div>
-
       <div class="fg">
         <label>本次進出類型<span class="req">*</span></label>
         <div class="type-toggle">
@@ -246,7 +221,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           <button class="type-btn" id="type-maint" onclick="setType('maint')">🔧 維修保養儀器</button>
         </div>
       </div>
-
       <div id="surg-block">
         <div class="surg-group">
           <div class="surg-group-hdr">🔪 跟刀手術資訊</div>
@@ -266,7 +240,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           </div>
         </div>
       </div>
-
       <div id="maint-block" style="display:none">
         <div class="maint-group">
           <div class="maint-group-hdr">🔧 維修保養儀器資訊</div>
@@ -286,8 +259,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
           </div>
         </div>
       </div>
-
-      <!-- ✅ 廠商完成填寫按鈕 -->
       <button class="vendor-done-btn" onclick="vendorDone()">
         填寫完成，交給護理人員 <span class="arrow">→</span>
       </button>
@@ -334,7 +305,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
       <div class="fg"><label>備註</label><textarea id="f-note" placeholder="選填備註事項..."></textarea></div>
       <div class="btn-row">
         <button class="btn bg" style="flex:none;padding:15px 20px" onclick="clearNurseForm()">清除</button>
-        <!-- ✅ 存檔按鈕 -->
         <button class="save-btn" onclick="submitEntry()">
           <span class="save-label-main">✅ 確認進場登記</span>
           <span class="save-label-sub">存檔</span>
@@ -379,7 +349,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 
-<!-- 統計人員清單 overlay -->
 <div class="list-overlay" id="list-overlay" onclick="closeStatList(event)">
   <div class="list-sheet">
     <div class="ls-hdr">
@@ -393,7 +362,6 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
 </div>
 
-<!-- ✏️ 編輯紀錄 Modal -->
 <div class="edit-overlay" id="edit-overlay" onclick="closeEditModal(event)">
   <div class="edit-sheet">
     <div class="edit-hdr">
@@ -468,7 +436,11 @@ var currentMode='vendor';
 var exitId=null;
 var editId=null;
 var currentType='surg';
-var today=new Date().toISOString().split('T')[0];
+
+// ✅ 修正核心：每次呼叫都動態取得當下日期，跨日不卡住
+function getToday(){
+  return new Date().toISOString().split('T')[0];
+}
 
 var statCfg={
   total:{title:'📋 今日進場人員',bg:'#ede9fe',fg:'#7c3aed',cbg:'#7c3aed',cfg:'#fff'},
@@ -477,9 +449,7 @@ var statCfg={
   left:{title:'🚪 已離場人員',bg:'#fef3c7',fg:'#d97706',cbg:'#d97706',cfg:'#fff'}
 };
 
-// ── 廠商按「填寫完成，交給護理人員」── 
 function vendorDone(){
-  // 驗證廠商必填欄位（不含識別證號/護理簽名，那是護理人員的）
   var req=['f-date','f-time','f-company','f-brand','f-name','f-phone'];
   for(var i=0;i<req.length;i++){
     if(!document.getElementById(req[i]).value.trim()){
@@ -500,12 +470,12 @@ function vendorDone(){
   } else {
     if(!document.getElementById('f-maint-dept').value){toast('請選擇維修保養儀器哪一科');return;}
   }
-  // 驗證通過 → 切換到護理人員模式
   switchModeDirectly('nurse');
   toast('✅ 廠商資料填寫完成，請護理人員繼續操作');
 }
 
 function openStatList(type){
+  var today=getToday();
   var list=[];
   if(type==='total') list=records.filter(function(r){return r.date===today;});
   else if(type==='inside') list=records.filter(function(r){return r.status==='in';});
@@ -558,7 +528,6 @@ function closeStatList(e,force){
   }
 }
 
-// ===== 編輯功能 =====
 function openEditModal(id){
   editId=id;
   var r=records.find(function(x){return x.id===id;});
@@ -650,7 +619,6 @@ function saveEdit(){
     })
     .catch(function(){toast('❌ 修改失敗，請重試');});
 }
-// ===== 編輯功能結束 =====
 
 function setType(t){
   currentType=t;
@@ -660,11 +628,28 @@ function setType(t){
   document.getElementById('maint-block').style.display=t==='maint'?'block':'none';
 }
 
-function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('zh-TW',{hour12:false});}
-updateClock();setInterval(updateClock,1000);
-document.getElementById('f-date').value=today;
+// ✅ 修正：每秒更新時鐘，並同步日期欄位（若使用者未手動修改）
+function updateClock(){
+  var now=new Date();
+  document.getElementById('clock').textContent=now.toLocaleTimeString('zh-TW',{hour12:false});
+  var dateEl=document.getElementById('f-date');
+  if(dateEl&&!dateEl.dataset.userEdited){
+    dateEl.value=getToday();
+  }
+}
+
+updateClock();
+setInterval(updateClock,1000);
+
+// 使用者手動修改日期後，停止自動覆蓋
+document.getElementById('f-date').addEventListener('change',function(){
+  this.dataset.userEdited='1';
+});
+
+// ✅ 初始值使用 getToday()
+document.getElementById('f-date').value=getToday();
 document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
-document.getElementById('rpt-month').value=today.slice(0,7);
+document.getElementById('rpt-month').value=getToday().slice(0,7);
 
 db.collection('records').orderBy('createdAt','desc').onSnapshot(function(snapshot){
   records=snapshot.docs.map(function(d){return Object.assign({id:d.id},d.data());});
@@ -672,7 +657,6 @@ db.collection('records').orderBy('createdAt','desc').onSnapshot(function(snapsho
   if(currentMode==='nurse'){renderExitList();renderRecords();}
 });
 
-// 直接切換模式（不需要密碼，供 vendorDone 使用）
 function switchModeDirectly(mode){
   currentMode=mode;
   document.getElementById('vendor-mode').style.display=mode==='vendor'?'block':'none';
@@ -704,7 +688,9 @@ function showPanel(name){
   window.scrollTo(0,0);
 }
 
+// ✅ 修正：updateStats 每次都呼叫 getToday()
 function updateStats(){
+  var today=getToday();
   var tr=records.filter(function(r){return r.date===today;});
   var insideAll=records.filter(function(r){return r.status==='in';});
   document.getElementById('s-total').textContent=tr.length;
@@ -799,12 +785,12 @@ function submitEntry(){
       toast('✅ 進場登記存檔完成（已同步雲端）');
       clearVendorForm();
       clearNurseForm();
-      // 存檔後切回廠商模式，等待下一位
       switchModeDirectly('vendor');
     })
     .catch(function(){toast('❌ 儲存失敗，請重試');});
 }
 
+// ✅ 修正：清除表單後重設為當下今日日期
 function clearVendorForm(){
   ['f-company','f-brand','f-name','f-phone','cert-card','f-maint-device'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-dept').value='';
@@ -819,7 +805,9 @@ function clearVendorForm(){
   document.getElementById('cert-opt-yes').removeAttribute('style');document.getElementById('cert-opt-no').removeAttribute('style');
   document.getElementById('cert-opt-yes').querySelector('label').style.color='';
   document.getElementById('cert-opt-no').querySelector('label').style.color='';
-  document.getElementById('f-date').value=today;
+  var dateEl=document.getElementById('f-date');
+  dateEl.value=getToday();
+  delete dateEl.dataset.userEdited;
   document.getElementById('f-time').value=new Date().toTimeString().slice(0,5);
   setType('surg');
 }
@@ -828,7 +816,9 @@ function clearNurseForm(){
   ['f-badge','f-recorder','f-note'].forEach(function(id){document.getElementById(id).value='';});
 }
 
+// ✅ 修正：renderExitList 使用 getToday()
 function renderExitList(){
+  var today=getToday();
   var inside=records.filter(function(r){return r.status==='in';});
   var el=document.getElementById('exit-list');
   document.getElementById('exit-form-card').style.display='none';
@@ -869,7 +859,9 @@ function confirmExit(){
     .catch(function(){toast('❌ 更新失敗');});
 }
 
+// ✅ 修正：fmtRecord 使用 getToday()
 function fmtRecord(r){
+  var today=getToday();
   var isMaint=r.entryType==='maint';
   var typeTag=isMaint?'<span class="badge bmaint">🔧 維修保養</span>':'<span class="badge bcy">🔪 跟刀</span>';
   var detail=isMaint
